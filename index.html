@@ -33,6 +33,23 @@
         document.documentElement.setAttribute('data-theme', DEFAULT_THEME);
       }
     })();
+    /* Langue : 1) paramètre ?lang=fr|en  2) choix mémorisé (livio-lang)  3) français.
+       En anglais, la page reste masquée jusqu'à ce que les textes soient traduits (pas de flash en français). */
+    (function () {
+      var lang = 'fr', root = document.documentElement;
+      var m = /[?&]lang=(fr|en)(?:&|$)/i.exec(location.search);
+      if (m) { lang = m[1].toLowerCase(); }
+      else {
+        try { var saved = localStorage.getItem('livio-lang'); if (saved === 'en' || saved === 'fr') lang = saved; } catch (e) {}
+      }
+      root.setAttribute('lang', lang);
+      window.__LIVIO_LANG = lang;
+      if (lang === 'en') {
+        root.classList.add('i18n-pending');
+        document.title = 'Livio SANTIN · BUT GMP Portfolio';
+        setTimeout(function () { root.classList.remove('i18n-pending'); }, 2500); // filet de sécurité
+      }
+    })();
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -131,6 +148,14 @@
     [data-theme="dark"] .theme-toggle .sun { display: none; }
     [data-theme="dark"] .theme-toggle .moon { display: block; }
     .burger { display: none; }
+    html.i18n-pending body { visibility: hidden; }
+    /* Sélecteur de langue FR | EN */
+    .lang-toggle { height: 42px; padding: 0 12px; border-radius: var(--r-sm); border: 1px solid var(--border-2); background: var(--surface); color: var(--text-mut); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: .86rem; letter-spacing: .04em; transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast); }
+    .lang-toggle:hover { background: var(--surface-2); transform: translateY(-1px); }
+    .lang-toggle .sep { opacity: .45; font-weight: 400; }
+    .lang-toggle .on { color: var(--accent-strong); }
+    [data-theme="dark"] .lang-toggle .on { color: var(--accent); }
+    .nav-lang { display: none; }
     @media (max-width: 1040px) {
       .nav { position: fixed; inset: var(--header-h) 0 auto 0; flex-direction: column; align-items: stretch; gap: 2px; background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 18px 22px; box-shadow: var(--shadow-lg); transform: translateY(-120%); opacity: 0; visibility: hidden; transition: transform var(--t-med), opacity var(--t-med), visibility var(--t-med); max-height: calc(100vh - var(--header-h)); overflow-y: auto; }
       .nav.open { transform: translateY(0); opacity: 1; visibility: visible; }
@@ -138,6 +163,11 @@
       .nav-btn::after { display: none; }
       .nav-btn[aria-selected="true"] { background: var(--surface-2); box-shadow: inset 3px 0 0 var(--accent); }
       .burger { display: grid; }
+      .nav-lang { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px 12px; margin-top: 10px; padding: 16px 16px 2px; border-top: 1px solid var(--border); }
+      .nav-lang-label { font-size: .78rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-mut); }
+      .nav-lang-opts { display: inline-flex; gap: 6px; }
+      .lang-opt { border: 1px solid var(--border-2); background: var(--surface); color: var(--text-soft); border-radius: 999px; padding: 8px 14px; font-family: 'Inter', sans-serif; font-size: .92rem; font-weight: 500; cursor: pointer; }
+      .lang-opt[aria-pressed="true"] { background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-color: transparent; color: var(--accent-ink); font-weight: 600; }
     }
 
     /* ======================================================================
@@ -470,34 +500,44 @@
 </head>
 
 <body>
-  <a class="skip-link" href="#main">Aller au contenu principal</a>
+  <a class="skip-link" href="#main" data-i18n="skip">Aller au contenu principal</a>
 
   <!-- ===================== EN-TÊTE ===================== -->
   <header class="site-header">
     <div class="header-inner">
-      <button class="brand" data-tab="accueil" aria-label="Livio Santin — retour à l'accueil">
+      <button class="brand" data-tab="accueil" aria-label="Livio Santin — retour à l'accueil" data-i18n-attr="aria-label:brand.aria">
         <span class="brand-mark">LS</span>
         <span>
           <span class="brand-name">Livio <span>SANTIN</span></span>
-          <span class="brand-sub">Portfolio · BUT GMP · 2e année</span>
+          <span class="brand-sub" data-i18n="brand.sub">Portfolio · BUT GMP · 2e année</span>
         </span>
       </button>
 
-      <nav class="nav" id="nav" role="tablist" aria-label="Navigation principale">
-        <button class="nav-btn" role="tab" data-tab="accueil"     aria-selected="true"  aria-controls="accueil">Accueil</button>
-        <button class="nav-btn" role="tab" data-tab="competences" aria-selected="false" aria-controls="competences">Compétences techniques</button>
-        <button class="nav-btn" role="tab" data-tab="projets"     aria-selected="false" aria-controls="projets">Mes projets / SAÉ</button>
-        <button class="nav-btn" role="tab" data-tab="stage"       aria-selected="false" aria-controls="stage">Stage<span class="nav-dot" aria-hidden="true"></span></button>
-        <button class="nav-btn" role="tab" data-tab="engagements" aria-selected="false" aria-controls="engagements">Engagements &amp; Passions</button>
-        <button class="nav-btn" role="tab" data-tab="contact"     aria-selected="false" aria-controls="contact">Mon CV / Contact</button>
+      <nav class="nav" id="nav" role="tablist" aria-label="Navigation principale" data-i18n-attr="aria-label:nav.aria">
+        <button class="nav-btn" role="tab" data-tab="accueil"     aria-selected="true"  aria-controls="accueil" data-i18n="nav.home">Accueil</button>
+        <button class="nav-btn" role="tab" data-tab="competences" aria-selected="false" aria-controls="competences" data-i18n="nav.skills">Compétences techniques</button>
+        <button class="nav-btn" role="tab" data-tab="projets"     aria-selected="false" aria-controls="projets" data-i18n="nav.projects">Mes projets / SAÉ</button>
+        <button class="nav-btn" role="tab" data-tab="stage"       aria-selected="false" aria-controls="stage" data-i18n="nav.stage">Stage<span class="nav-dot" aria-hidden="true"></span></button>
+        <button class="nav-btn" role="tab" data-tab="engagements" aria-selected="false" aria-controls="engagements" data-i18n="nav.engagements">Engagements &amp; Passions</button>
+        <button class="nav-btn" role="tab" data-tab="contact"     aria-selected="false" aria-controls="contact" data-i18n="nav.contact">Mon CV / Contact</button>
+        <div class="nav-lang" role="group" aria-label="Langue / Language">
+          <span class="nav-lang-label">Langue · Language</span>
+          <span class="nav-lang-opts">
+            <button type="button" class="lang-opt" data-set-lang="fr" lang="fr" aria-pressed="true">Français</button>
+            <button type="button" class="lang-opt" data-set-lang="en" lang="en" aria-pressed="false">English</button>
+          </span>
+        </div>
       </nav>
 
       <div class="header-actions">
-        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Basculer le mode sombre" title="Mode clair / sombre">
+        <button class="lang-toggle" id="langToggle" type="button" aria-label="Display the site in English" data-i18n-attr="aria-label:lang.aria;title:lang.title" title="English version">
+          <span data-l="fr">FR</span><span class="sep" aria-hidden="true">|</span><span data-l="en">EN</span>
+        </button>
+        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Basculer le mode sombre" title="Mode clair / sombre" data-i18n-attr="aria-label:theme.aria;title:theme.title">
           <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
           <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <button class="icon-btn burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
+        <button class="icon-btn burger" id="burger" aria-label="Ouvrir le menu" data-i18n-attr="aria-label:menu.aria" aria-expanded="false" aria-controls="nav">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
         </button>
       </div>
@@ -515,18 +555,18 @@
         <div class="hero-content">
           <span class="hero-badge"><span class="dot"></span>IUT de Troyes · URCA · BUT 2</span>
           <h1>Portfolio <span class="accent">|</span> BUT GMP</h1>
-          <p class="hero-tag">Génie Mécanique &amp; Productique — Conception, production &amp; rigueur technique.</p>
+          <p class="hero-tag" data-i18n="hero.tag">Génie Mécanique &amp; Productique — Conception, production &amp; rigueur technique.</p>
           <div class="hero-cta">
             <button class="btn btn-primary" data-tab="projets">
-              Voir mes projets
+              <span data-i18n="hero.cta1">Voir mes projets</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </button>
-            <button class="btn btn-ghost" data-tab="contact">Me contacter</button>
+            <button class="btn btn-ghost" data-tab="contact"><span data-i18n="hero.cta2">Me contacter</span></button>
           </div>
-          <button class="hero-stage" data-tab="stage"><span class="g-dot" aria-hidden="true"></span><span>En recherche de stage de 2<sup>e</sup> année — en savoir plus</span></button>
+          <button class="hero-stage" data-tab="stage"><span class="g-dot" aria-hidden="true"></span><span data-i18n="hero.stage">En recherche de stage de 2<sup>e</sup> année — en savoir plus</span></button>
         </div>
         <div class="scroll-hint" aria-hidden="true">
-          <span>Découvrir</span>
+          <span data-i18n="hero.scroll">Découvrir</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
         </div>
       </div>
@@ -537,12 +577,12 @@
           <div class="profile">
             <div class="avatar reveal">
               <div class="avatar-fallback" aria-hidden="true">LS</div>
-              <img src="images/photo_profil.webp" width="522" height="541" alt="Photo de profil de Livio Santin" onerror="this.classList.add('media-broken')" />
+              <img src="images/photo_profil.webp" width="522" height="541" alt="Photo de profil de Livio Santin" data-i18n-attr="alt:about.alt" onerror="this.classList.add('media-broken')" />
             </div>
             <div class="reveal">
-              <span class="eyebrow">À propos</span>
-              <h2>Étudiant en Génie Mécanique &amp; Productique<br>| IUT de Troyes</h2>
-              <p class="intro-text">
+              <span class="eyebrow" data-i18n="about.eyebrow">À propos</span>
+              <h2 data-i18n="about.title">Étudiant en Génie Mécanique &amp; Productique<br>| IUT de Troyes</h2>
+              <p class="intro-text" data-i18n="about.text">
                 Actuellement en 2e année de BUT GMP, je me forme à la conception mécanique et à la
                 production industrielle. Au-delà des cours, je cultive la rigueur et la précision à travers
                 mon engagement de Réserviste dans l'Armée de l'Air et de l'Espace et ma formation de pilote
@@ -559,24 +599,24 @@
       <div class="section-pad" style="padding-top:0;">
         <div class="container">
           <div class="reveal" style="margin-bottom:34px;">
-            <span class="eyebrow">Mes valeurs</span>
-            <h2 class="section-title">Ce qui guide ma démarche d'ingénieur</h2>
+            <span class="eyebrow" data-i18n="values.eyebrow">Mes valeurs</span>
+            <h2 class="section-title" data-i18n="values.title">Ce qui guide ma démarche d'ingénieur</h2>
           </div>
           <div class="grid-3 stagger">
             <article class="value-card reveal" style="--i:0">
               <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
-              <h3>Rigueur</h3>
-              <p>Issu de mon parcours de réserviste opérationnel et de ma pratique du tir sportif, le respect absolu des consignes, de la sécurité et des procédures est pour moi une seconde nature. J'applique cette même exigence de précision dans mes livrables techniques et mes analyses en ingénierie.</p>
+              <h3 data-i18n="val1.t">Rigueur</h3>
+              <p data-i18n="val1.p">Issu de mon parcours de réserviste opérationnel et de ma pratique du tir sportif, le respect absolu des consignes, de la sécurité et des procédures est pour moi une seconde nature. J'applique cette même exigence de précision dans mes livrables techniques et mes analyses en ingénierie.</p>
             </article>
             <article class="value-card reveal" style="--i:1">
               <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
-              <h3>Technicité</h3>
-              <p>Passionné par le fonctionnement des systèmes complexes, du moteur aux mécanismes d'armement, le BUT GMP me permet de transformer cette curiosité en compétences d'ingénierie : conception CAO, dimensionnement mécanique et optimisation des procédés de fabrication.</p>
+              <h3 data-i18n="val2.t">Technicité</h3>
+              <p data-i18n="val2.p">Passionné par le fonctionnement des systèmes complexes, du moteur aux mécanismes d'armement, le BUT GMP me permet de transformer cette curiosité en compétences d'ingénierie : conception CAO, dimensionnement mécanique et optimisation des procédés de fabrication.</p>
             </article>
             <article class="value-card reveal" style="--i:2">
               <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 22l10-10M16 8l4-4M9.5 14.5l5-5M22 2l-7 2-3 3-5 5-3 3 5 5 3-3 5-5 3-3 2-7z"/></svg></div>
-              <h3>Autonomie</h3>
-              <p>Mes 35 heures de vol, dont mes premières navigations en solo pour le PPL, ont forgé ma capacité à prendre des décisions rapides, à gérer le stress et à assumer mes responsabilités. En mode projet ou en autonomie en atelier, je sais avancer seul vers l'objectif fixé.</p>
+              <h3 data-i18n="val3.t">Autonomie</h3>
+              <p data-i18n="val3.p">Mes 35 heures de vol, dont mes premières navigations en solo pour le PPL, ont forgé ma capacité à prendre des décisions rapides, à gérer le stress et à assumer mes responsabilités. En mode projet ou en autonomie en atelier, je sais avancer seul vers l'objectif fixé.</p>
             </article>
           </div>
         </div>
@@ -587,9 +627,9 @@
     <section class="page" id="competences" role="tabpanel" tabindex="-1">
       <div class="page-banner">
         <div class="container">
-          <span class="eyebrow">Savoir-faire</span>
-          <h1>Compétences techniques</h1>
-          <p>Trois grands domaines de compétences couverts par la formation BUT GMP, du bureau d'études à l'atelier de production.</p>
+          <span class="eyebrow" data-i18n="skills.eyebrow">Savoir-faire</span>
+          <h1 data-i18n="skills.title">Compétences techniques</h1>
+          <p data-i18n="skills.lead">Trois grands domaines de compétences couverts par la formation BUT GMP, du bureau d'études à l'atelier de production.</p>
         </div>
       </div>
 
@@ -598,73 +638,73 @@
 
           <div class="skill-block">
             <div class="skill-text reveal">
-              <span class="skill-num">01 — Bureau d'Études</span>
-              <h3>Spécifier et Concevoir</h3>
+              <span class="skill-num" data-i18n="s1.num">01 — Bureau d'Études</span>
+              <h3 data-i18n="s1.t">Spécifier et Concevoir</h3>
               <ul class="skill-list">
-                <li>Modélisation 3D et mise en plan sur CATIA V5 et TopSolid<span class="new-tag">BUT 2</span></li>
-                <li>Dimensionnement mécanique et calculs de RDM (Résistance des Matériaux)</li>
-                <li>Choix de composants mécaniques (roulements, guidages, moteurs)</li>
-                <li>Analyse fonctionnelle (bête à cornes, diagramme FAST, cahier des charges)</li>
+                <li data-i18n="s1.l1">Modélisation 3D et mise en plan sur CATIA V5 et TopSolid<span class="new-tag">BUT 2</span></li>
+                <li data-i18n="s1.l2">Dimensionnement mécanique et calculs de RDM (Résistance des Matériaux)</li>
+                <li data-i18n="s1.l3">Choix de composants mécaniques (roulements, guidages, moteurs)</li>
+                <li data-i18n="s1.l4">Analyse fonctionnelle (bête à cornes, diagramme FAST, cahier des charges)</li>
               </ul>
             </div>
             <figure class="media reveal">
               <div class="media-fallback" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/><path d="M13 13l5 5"/></svg>
-                <span>CAO · CATIA V5</span>
+                <span data-i18n="s1.fb">CAO · CATIA V5</span>
               </div>
-              <img src="images/cao_solidworks.webp" width="1158" height="656" alt="Modélisation CAO sous CATIA V5" loading="lazy" decoding="async" onerror="this.classList.add('media-broken')" />
+              <img src="images/cao_solidworks.webp" width="1158" height="656" alt="Modélisation CAO sous CATIA V5" data-i18n-attr="alt:s1.alt" loading="lazy" decoding="async" onerror="this.classList.add('media-broken')" />
             </figure>
           </div>
 
           <div class="skill-block reverse">
             <div class="skill-text reveal">
-              <span class="skill-num">02 — Atelier / Production</span>
-              <h3>Réaliser et Produire</h3>
+              <span class="skill-num" data-i18n="s2.num">02 — Atelier / Production</span>
+              <h3 data-i18n="s2.t">Réaliser et Produire</h3>
               <ul class="skill-list">
-                <li>Lecture et interprétation de plans techniques (tolérances géométriques et dimensionnelles GPS)</li>
-                <li>Conception de processus de fabrication (gamme d'usinage, choix des outils)</li>
-                <li>Programmation de machines-outils à commande numérique (FAO)</li>
-                <li>Métrologie et contrôle qualité des pièces produites</li>
+                <li data-i18n="s2.l1">Lecture et interprétation de plans techniques (tolérances géométriques et dimensionnelles GPS)</li>
+                <li data-i18n="s2.l2">Conception de processus de fabrication (gamme d'usinage, choix des outils)</li>
+                <li data-i18n="s2.l3">Programmation de machines-outils à commande numérique (FAO)</li>
+                <li data-i18n="s2.l4">Métrologie et contrôle qualité des pièces produites</li>
               </ul>
             </div>
             <figure class="media reveal">
               <div class="media-fallback" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
-                <span>Usinage · Fraisage</span>
+                <span data-i18n="s2.fb">Usinage · Fraisage</span>
               </div>
-              <img src="images/usinage_fraisage.webp" width="815" height="550" alt="Pièce usinée modélisée" loading="lazy" decoding="async" onerror="this.classList.add('media-broken')" />
+              <img src="images/usinage_fraisage.webp" width="815" height="550" alt="Pièce usinée modélisée" data-i18n-attr="alt:s2.alt" loading="lazy" decoding="async" onerror="this.classList.add('media-broken')" />
             </figure>
           </div>
 
           <div class="skill-block">
             <div class="skill-text reveal">
-              <span class="skill-num">03 — Logistique / Maintenance</span>
-              <h3>Manager et Organiser</h3>
+              <span class="skill-num" data-i18n="s3.num">03 — Logistique / Maintenance</span>
+              <h3 data-i18n="s3.t">Manager et Organiser</h3>
               <ul class="skill-list">
-                <li>Implantation d'un poste de travail ou d'une ligne de production</li>
-                <li>Gestion de projet en équipe (répartition des tâches, respect des jalons)</li>
-                <li>Planification et suivi de production / Maintenance des systèmes mécaniques</li>
+                <li data-i18n="s3.l1">Implantation d'un poste de travail ou d'une ligne de production</li>
+                <li data-i18n="s3.l2">Gestion de projet en équipe (répartition des tâches, respect des jalons)</li>
+                <li data-i18n="s3.l3">Planification et suivi de production / Maintenance des systèmes mécaniques</li>
               </ul>
             </div>
             <figure class="media reveal">
               <div class="media-fallback" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
-                <span>Implantation · Gantt</span>
+                <span data-i18n="s3.fb">Implantation · Gantt</span>
               </div>
-              <img src="images/implantation_gantt.webp" width="291" height="246" alt="Préhenseur de la cellule robotisée" loading="lazy" decoding="async" onerror="this.classList.add('media-broken')" />
+              <img src="images/implantation_gantt.webp" width="291" height="246" alt="Préhenseur de la cellule robotisée" data-i18n-attr="alt:s3.alt" loading="lazy" decoding="async" onerror="this.classList.add('media-broken')" />
             </figure>
           </div>
 
           <!-- Logiciels maîtrisés (nouveau en v2) -->
           <div class="tools-strip reveal">
-            <h3>Logiciels &amp; outils</h3>
+            <h3 data-i18n="tools.t">Logiciels &amp; outils</h3>
             <div class="tool-chips">
-              <span class="tool-chip"><b>CATIA V5</b> CAO</span>
-              <span class="tool-chip is-new"><b>TopSolid</b> CAO · nouveau en BUT 2</span>
-              <span class="tool-chip"><b>VERICUT</b> simulation CN</span>
-              <span class="tool-chip"><b>HandlingPRO</b> implantation robotisée</span>
-              <span class="tool-chip"><b>FANUC Roboguide</b> robotique</span>
-              <span class="tool-chip"><b>Cura</b> impression 3D</span>
+              <span class="tool-chip" data-i18n="chip.catia"><b>CATIA V5</b> CAO</span>
+              <span class="tool-chip is-new" data-i18n="chip.topsolid"><b>TopSolid</b> CAO · nouveau en BUT 2</span>
+              <span class="tool-chip" data-i18n="chip.vericut"><b>VERICUT</b> simulation CN</span>
+              <span class="tool-chip" data-i18n="chip.handling"><b>HandlingPRO</b> implantation robotisée</span>
+              <span class="tool-chip" data-i18n="chip.fanuc"><b>FANUC Roboguide</b> robotique</span>
+              <span class="tool-chip" data-i18n="chip.cura"><b>Cura</b> impression 3D</span>
             </div>
           </div>
 
@@ -676,9 +716,9 @@
     <section class="page" id="projets" role="tabpanel" tabindex="-1">
       <div class="page-banner">
         <div class="container">
-          <span class="eyebrow">Réalisations</span>
-          <h1>Mes projets / SAÉ</h1>
-          <p>Les SAÉ (Situations d'Apprentissage et d'Évaluation) sont des projets concrets qui me permettent de mettre en pratique les connaissances théoriques vues en cours pour résoudre des problématiques professionnelles réelles.</p>
+          <span class="eyebrow" data-i18n="proj.eyebrow">Réalisations</span>
+          <h1 data-i18n="proj.title">Mes projets / SAÉ</h1>
+          <p data-i18n="proj.lead">Les SAÉ (Situations d'Apprentissage et d'Évaluation) sont des projets concrets qui me permettent de mettre en pratique les connaissances théoriques vues en cours pour résoudre des problématiques professionnelles réelles.</p>
         </div>
       </div>
 
@@ -686,7 +726,7 @@
         <div class="container">
           <p class="sae-hint reveal">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11.5V5.5a2 2 0 0 1 4 0V10"/><path d="M13 10.5a2 2 0 0 1 4 0V13a6 6 0 0 1-6 6h-1a5 5 0 0 1-3.9-1.9l-2.2-2.8a1.8 1.8 0 0 1 2.7-2.3l1.4 1.3"/></svg>
-            Cliquez sur une carte pour ouvrir son détail complet&nbsp;: note obtenue, contexte, organisation et rapport PDF.
+            <span data-i18n="proj.hint">Cliquez sur une carte pour ouvrir son détail complet&nbsp;: note obtenue, contexte, organisation et rapport PDF.</span>
           </p>
           <!-- Généré en JS depuis SAE_DATA, regroupé par semestre (du plus récent au plus ancien) -->
           <div id="saeSemesters"></div>
@@ -698,9 +738,9 @@
     <section class="page" id="stage" role="tabpanel" tabindex="-1">
       <div class="page-banner">
         <div class="container">
-          <span class="eyebrow">Stage de 2e année</span>
-          <h1>Stage</h1>
-          <p>Le stage de BUT 2 est l'occasion de mettre mes compétences de conception et de production au service d'une entreprise industrielle.</p>
+          <span class="eyebrow" data-i18n="stage.eyebrow">Stage de 2e année</span>
+          <h1 data-i18n="stage.title">Stage</h1>
+          <p data-i18n="stage.lead">Le stage de BUT 2 est l'occasion de mettre mes compétences de conception et de production au service d'une entreprise industrielle.</p>
         </div>
       </div>
 
@@ -710,60 +750,60 @@
           <!-- Statut -->
           <div class="stage-status reveal">
             <div>
-              <span class="stage-live"><span class="g-dot" aria-hidden="true"></span>Recherche en cours</span>
-              <h2>Je recherche un stage de 2<sup>e</sup> année de BUT GMP</h2>
-              <p>Étudiant en 2<sup>e</sup> année de BUT Génie Mécanique et Productique à l'IUT de Troyes, je recherche un stage en entreprise industrielle, en priorité en France. Bureau d'études, méthodes ou production : je souhaite contribuer à des projets concrets en m'appuyant sur la CAO (CATIA V5, TopSolid), la préparation de la fabrication et le travail en équipe.</p>
+              <span class="stage-live" data-i18n="stage.live"><span class="g-dot" aria-hidden="true"></span>Recherche en cours</span>
+              <h2 data-i18n="stage.h">Je recherche un stage de 2<sup>e</sup> année de BUT GMP</h2>
+              <p data-i18n="stage.p">Étudiant en 2<sup>e</sup> année de BUT Génie Mécanique et Productique à l'IUT de Troyes, je recherche un stage en entreprise industrielle, en priorité en France. Bureau d'études, méthodes ou production : je souhaite contribuer à des projets concrets en m'appuyant sur la CAO (CATIA V5, TopSolid), la préparation de la fabrication et le travail en équipe.</p>
             </div>
             <div class="stage-cta">
               <a class="btn btn-primary" href="documents/cv_livio_santin.pdf" download>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-                Télécharger mon CV
+                <span data-i18n="stage.cv">Télécharger mon CV</span>
               </a>
-              <a class="btn btn-outline" href="mailto:livio.santin@icloud.com?subject=Proposition%20de%20stage%20BUT%20GMP">
+              <a class="btn btn-outline" href="mailto:livio.santin@icloud.com?subject=Proposition%20de%20stage%20BUT%20GMP" data-i18n-attr="href:stage.mailto">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-                Me proposer un stage
+                <span data-i18n="stage.offer">Me proposer un stage</span>
               </a>
             </div>
           </div>
 
           <!-- Infos clés (à mettre à jour quand l'IUT confirme les dates) -->
           <div class="stage-facts stagger">
-            <div class="stage-fact reveal" style="--i:0"><span class="label">Statut</span><span class="value">En recherche<small>depuis octobre 2026</small></span></div>
-            <div class="stage-fact reveal" style="--i:1"><span class="label">Période</span><span class="value">Semestre 4<small>printemps 2027 · dates à confirmer</small></span></div>
-            <div class="stage-fact reveal" style="--i:2"><span class="label">Durée</span><span class="value">À confirmer<small>selon le calendrier de l'IUT</small></span></div>
-            <div class="stage-fact reveal" style="--i:3"><span class="label">Zone</span><span class="value">France<small>Troyes et au-delà</small></span></div>
+            <div class="stage-fact reveal" style="--i:0"><span class="label" data-i18n="fact1.l">Statut</span><span class="value" data-i18n="fact1.v">En recherche<small>depuis octobre 2026</small></span></div>
+            <div class="stage-fact reveal" style="--i:1"><span class="label" data-i18n="fact2.l">Période</span><span class="value" data-i18n="fact2.v">Semestre 4<small>printemps 2027 · dates à confirmer</small></span></div>
+            <div class="stage-fact reveal" style="--i:2"><span class="label" data-i18n="fact3.l">Durée</span><span class="value" data-i18n="fact3.v">À confirmer<small>selon le calendrier de l'IUT</small></span></div>
+            <div class="stage-fact reveal" style="--i:3"><span class="label" data-i18n="fact4.l">Zone</span><span class="value" data-i18n="fact4.v">France<small>Troyes et au-delà</small></span></div>
           </div>
 
           <div class="stage-two">
             <!-- Ce que j'apporte -->
             <div class="stage-panel reveal">
-              <h3>Ce que je peux apporter</h3>
+              <h3 data-i18n="stage.bring">Ce que je peux apporter</h3>
               <ul class="skill-list">
-                <li>Conception et mise en plan sous CATIA V5 et TopSolid</li>
-                <li>Préparation de la fabrication : gammes d'usinage, simulation VERICUT, chiffrage</li>
-                <li>Implantation de postes et de cellules robotisées (HandlingPRO, Roboguide)</li>
-                <li>Rigueur et respect des procédures acquis dans la réserve opérationnelle et en aéronautique</li>
+                <li data-i18n="bring1">Conception et mise en plan sous CATIA V5 et TopSolid</li>
+                <li data-i18n="bring2">Préparation de la fabrication : gammes d'usinage, simulation VERICUT, chiffrage</li>
+                <li data-i18n="bring3">Implantation de postes et de cellules robotisées (HandlingPRO, Roboguide)</li>
+                <li data-i18n="bring4">Rigueur et respect des procédures acquis dans la réserve opérationnelle et en aéronautique</li>
               </ul>
             </div>
 
             <!-- Parcours en entreprise -->
             <div class="stage-panel reveal">
-              <h3>Expériences en entreprise</h3>
+              <h3 data-i18n="stage.xp">Expériences en entreprise</h3>
               <div class="timeline">
                 <div class="tl-item next">
-                  <span class="tl-date">2027 · Semestre 4</span>
-                  <h4>Stage de 2<sup>e</sup> année de BUT GMP</h4>
-                  <p>Entreprise à définir — recherche en cours.</p>
+                  <span class="tl-date" data-i18n="tl1.d">2027 · Semestre 4</span>
+                  <h4 data-i18n="tl1.t">Stage de 2<sup>e</sup> année de BUT GMP</h4>
+                  <p data-i18n="tl1.p">Entreprise à définir — recherche en cours.</p>
                 </div>
                 <div class="tl-item done">
-                  <span class="tl-date">Juillet 2024</span>
-                  <h4>Stage — Claroplast SAS, Troyes</h4>
-                  <p>Assemblage et contrôle qualité de menuiseries sur ligne de production.</p>
+                  <span class="tl-date" data-i18n="tl2.d">Juillet 2024</span>
+                  <h4 data-i18n="tl.claro">Stage — Claroplast SAS, Troyes</h4>
+                  <p data-i18n="tl2.p">Assemblage et contrôle qualité de menuiseries sur ligne de production.</p>
                 </div>
                 <div class="tl-item done">
-                  <span class="tl-date">Juillet 2023</span>
-                  <h4>Stage — Claroplast SAS, Troyes</h4>
-                  <p>Découverte de la production, respect des cadences et contrôle qualité des produits.</p>
+                  <span class="tl-date" data-i18n="tl3.d">Juillet 2023</span>
+                  <h4 data-i18n="tl.claro">Stage — Claroplast SAS, Troyes</h4>
+                  <p data-i18n="tl3.p">Découverte de la production, respect des cadences et contrôle qualité des produits.</p>
                 </div>
               </div>
             </div>
@@ -777,9 +817,9 @@
     <section class="page" id="engagements" role="tabpanel" tabindex="-1">
       <div class="page-banner">
         <div class="container">
-          <span class="eyebrow">En dehors des cours</span>
-          <h1>Engagements &amp; Passions</h1>
-          <p>Des engagements exigeants qui forgent ma discipline, mon sang-froid et mon goût pour la technique.</p>
+          <span class="eyebrow" data-i18n="eng.eyebrow">En dehors des cours</span>
+          <h1 data-i18n="eng.title">Engagements &amp; Passions</h1>
+          <p data-i18n="eng.lead">Des engagements exigeants qui forgent ma discipline, mon sang-froid et mon goût pour la technique.</p>
         </div>
       </div>
 
@@ -789,32 +829,32 @@
             <article class="passion-card reveal" style="--i:0">
               <div class="passion-body">
                 <div class="passion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/></svg></div>
-                <h3>Tir Sportif &amp; Systèmes d'Armes</h3>
-                <p>Passionné par l'ingénierie des systèmes d'armement et tireur sportif assidu, je possède une détention d'arme à titre sportif depuis mes 18 ans. Cette pratique exige une rigueur absolue et un respect strict des protocoles de sécurité, des valeurs que j'applique quotidiennement dans mes projets en Génie Mécanique. Au-delà de l'aspect sportif, je m'intéresse particulièrement au fonctionnement technique et à la conception des mécanismes.</p>
+                <h3 data-i18n="eng1.t">Tir Sportif &amp; Systèmes d'Armes</h3>
+                <p data-i18n="eng1.p">Passionné par l'ingénierie des systèmes d'armement et tireur sportif assidu, je possède une détention d'arme à titre sportif depuis mes 18 ans. Cette pratique exige une rigueur absolue et un respect strict des protocoles de sécurité, des valeurs que j'applique quotidiennement dans mes projets en Génie Mécanique. Au-delà de l'aspect sportif, je m'intéresse particulièrement au fonctionnement technique et à la conception des mécanismes.</p>
               </div>
             </article>
             <article class="passion-card reveal" style="--i:1">
-              <div class="passion-thumb"><img src="images/reserve_militaire.webp" width="725" height="386" alt="Réserve opérationnelle — Armée de l'Air et de l'Espace" loading="lazy" decoding="async" onerror="this.classList.add('media-broken')" /></div>
+              <div class="passion-thumb"><img src="images/reserve_militaire.webp" width="725" height="386" alt="Réserve opérationnelle data-i18n-attr="alt:eng2.alt" — Armée de l'Air et de l'Espace" loading="lazy" decoding="async" onerror="this.classList.add('media-broken')" /></div>
               <div class="passion-body">
                 <div class="passion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5l8-3z"/></svg></div>
-                <h3>Réserve Opérationnelle (AAE)</h3>
-                <p>Engagé en tant que réserviste opérationnel au sein de l'Armée de l'Air et de l'Espace depuis 2024, je sers en unité au sein d'un Escadron de Protection (EP). En tant que Fusilier Commando de l'air, j'évolue dans un environnement exigeant où la discipline et l'esprit d'équipe sont primordiaux. Ma participation régulière à des séances de tir opérationnel et aux missions de protection de base aérienne renforce ma capacité de concentration.</p>
+                <h3 data-i18n="eng2.t">Réserve Opérationnelle (AAE)</h3>
+                <p data-i18n="eng2.p">Engagé en tant que réserviste opérationnel au sein de l'Armée de l'Air et de l'Espace depuis 2024, je sers en unité au sein d'un Escadron de Protection (EP). En tant que Fusilier Commando de l'air, j'évolue dans un environnement exigeant où la discipline et l'esprit d'équipe sont primordiaux. Ma participation régulière à des séances de tir opérationnel et aux missions de protection de base aérienne renforce ma capacité de concentration.</p>
               </div>
             </article>
             <article class="passion-card reveal" style="--i:0">
-              <div class="passion-thumb"><img src="images/ppl_aviation.webp" width="900" height="494" alt="Formation de pilote privé (PPL)" loading="lazy" decoding="async" onerror="this.classList.add('media-broken')" /></div>
+              <div class="passion-thumb"><img src="images/ppl_aviation.webp" width="900" height="494" alt="Formation de pilote privé (PPL)" data-i18n-attr="alt:eng3.alt" loading="lazy" decoding="async" onerror="this.classList.add('media-broken')" /></div>
               <div class="passion-body">
                 <div class="passion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5a2.12 2.12 0 0 0-3-3L13 8 4.8 6.2a.5.5 0 0 0-.5.8l3.9 4.5-2.3 2.3-2-.4-1 1 3 2 2 3 1-1-.4-2 2.3-2.3 4.5 3.9a.5.5 0 0 0 .8-.5z"/></svg></div>
-                <h3>Formation Pilote Privé (PPL)</h3>
-                <p>Passionné par l'aéronautique, je poursuis actuellement ma formation de pilote privé (PPL). Avec 35 heures de vol à mon actif sur monomoteur, dont plusieurs heures en solo, j'ai développé une grande rigueur dans l'application des procédures et une gestion du stress éprouvée. Cette expérience me permet d'appréhender concrètement les notions de mécanique du vol.</p>
+                <h3 data-i18n="eng3.t">Formation Pilote Privé (PPL)</h3>
+                <p data-i18n="eng3.p">Passionné par l'aéronautique, je poursuis actuellement ma formation de pilote privé (PPL). Avec 35 heures de vol à mon actif sur monomoteur, dont plusieurs heures en solo, j'ai développé une grande rigueur dans l'application des procédures et une gestion du stress éprouvée. Cette expérience me permet d'appréhender concrètement les notions de mécanique du vol.</p>
               </div>
             </article>
             <article class="passion-card reveal" style="--i:1">
-              <div class="passion-thumb"><img src="images/airsoft_asso.webp" width="900" height="474" alt="Association Airsoft 3" loading="lazy" decoding="async" onerror="this.classList.add('media-broken')" /></div>
+              <div class="passion-thumb"><img src="images/airsoft_asso.webp" width="900" height="474" alt="Association Airsoft 3" data-i18n-attr="alt:eng4.alt" loading="lazy" decoding="async" onerror="this.classList.add('media-broken')" /></div>
               <div class="passion-body">
                 <div class="passion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/></svg></div>
-                <h3>Entrepreneuriat &amp; Gestion de Projet</h3>
-                <p>Fondateur d'une association basée à Troyes, je pilote ce projet avec l'objectif de développer des compétences concrètes en gestion administrative, en communication et en événementiel. C'est l'opportunité d'allier ma passion pour les répliques et la tactique à une expérience de gestion de projet d'équipe.</p>
+                <h3 data-i18n="eng4.t">Entrepreneuriat &amp; Gestion de Projet</h3>
+                <p data-i18n="eng4.p">Fondateur d'une association basée à Troyes, je pilote ce projet avec l'objectif de développer des compétences concrètes en gestion administrative, en communication et en événementiel. C'est l'opportunité d'allier ma passion pour les répliques et la tactique à une expérience de gestion de projet d'équipe.</p>
               </div>
             </article>
           </div>
@@ -826,9 +866,9 @@
     <section class="page" id="contact" role="tabpanel" tabindex="-1">
       <div class="page-banner">
         <div class="container">
-          <span class="eyebrow">Restons en contact</span>
-          <h1>Mon CV / Contact</h1>
-          <p>Téléchargez mon CV complet ou contactez-moi directement.</p>
+          <span class="eyebrow" data-i18n="contact.eyebrow">Restons en contact</span>
+          <h1 data-i18n="contact.title">Mon CV / Contact</h1>
+          <p data-i18n="contact.lead">Téléchargez mon CV complet ou contactez-moi directement.</p>
         </div>
       </div>
 
@@ -836,42 +876,42 @@
         <div class="container">
           <div class="cv-hero reveal">
             <span class="eyebrow" style="justify-content:center;">Curriculum Vitæ</span>
-            <h2>Mon parcours en un document</h2>
-            <p>Formation, compétences techniques et expériences réunies dans un CV prêt à imprimer.</p>
+            <h2 data-i18n="cv.title">Mon parcours en un document</h2>
+            <p data-i18n="cv.lead">Formation, compétences techniques et expériences réunies dans un CV prêt à imprimer.</p>
             <a class="btn btn-primary" href="documents/cv_livio_santin.pdf" download>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-              Télécharger mon CV complet (PDF)
+              <span data-i18n="cv.btn">Télécharger mon CV complet (PDF)</span>
             </a>
           </div>
 
           <div class="reveal" style="margin-top:48px;">
-            <span class="eyebrow">Coordonnées professionnelles</span>
-            <h2 class="section-title">Me joindre</h2>
+            <span class="eyebrow" data-i18n="contact.coords">Coordonnées professionnelles</span>
+            <h2 class="section-title" data-i18n="contact.reach">Me joindre</h2>
           </div>
 
           <div class="contact-grid stagger">
             <a class="contact-item reveal" style="--i:0" href="mailto:livio.santin@icloud.com">
               <span class="contact-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
-              <span><span class="label">Email personnel</span><br><span class="value">livio.santin@icloud.com</span></span>
+              <span><span class="label" data-i18n="contact.mail1">Email personnel</span><br><span class="value">livio.santin@icloud.com</span></span>
             </a>
             <a class="contact-item reveal" style="--i:1" href="mailto:livio.santin@etudiant.univ-reims.fr">
               <span class="contact-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
-              <span><span class="label">Email universitaire</span><br><span class="value">livio.santin@etudiant.univ-reims.fr</span></span>
+              <span><span class="label" data-i18n="contact.mail2">Email universitaire</span><br><span class="value">livio.santin@etudiant.univ-reims.fr</span></span>
             </a>
             <div class="contact-item reveal" style="--i:1">
               <span class="contact-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-              <span><span class="label">Situation</span><br><span class="value">IUT de Troyes — URCA</span></span>
+              <span><span class="label" data-i18n="contact.where">Situation</span><br><span class="value">IUT de Troyes — URCA</span></span>
             </div>
           </div>
 
           <div class="social-row reveal">
             <a class="social-btn linkedin" href="https://www.linkedin.com/in/livio-santin-6167b7416" target="_blank" rel="noopener noreferrer">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 18.34V9.6H5.67v8.74h2.67zM7 8.42a1.55 1.55 0 1 0 0-3.1 1.55 1.55 0 0 0 0 3.1zm11.34 9.92v-4.8c0-2.56-1.37-3.75-3.2-3.75a2.76 2.76 0 0 0-2.5 1.38V9.6H9.97v8.74h2.67v-4.62c0-1.22.23-2.4 1.74-2.4 1.49 0 1.5 1.39 1.5 2.48v4.54h2.46z"/></svg>
-              Profil LinkedIn
+              <span data-i18n="contact.linkedin">Profil LinkedIn</span>
             </a>
             <a class="social-btn" href="mailto:livio.santin@icloud.com">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-              Écrire un email
+              <span data-i18n="contact.write">Écrire un email</span>
             </a>
           </div>
         </div>
@@ -888,22 +928,22 @@
           <span class="brand-mark">LS</span>
           <span class="brand-name">Livio <span style="color:rgba(255,255,255,.55)">SANTIN</span></span>
         </div>
-        <nav class="footer-nav" aria-label="Navigation pied de page">
-          <button data-tab="accueil">Accueil</button>
-          <button data-tab="competences">Compétences</button>
-          <button data-tab="projets">Projets / SAÉ</button>
-          <button data-tab="stage">Stage</button>
-          <button data-tab="engagements">Engagements</button>
-          <button data-tab="contact">Contact</button>
+        <nav class="footer-nav" aria-label="Navigation pied de page" data-i18n-attr="aria-label:footer.aria">
+          <button data-tab="accueil" data-i18n="foot.home">Accueil</button>
+          <button data-tab="competences" data-i18n="foot.skills">Compétences</button>
+          <button data-tab="projets" data-i18n="foot.projects">Projets / SAÉ</button>
+          <button data-tab="stage" data-i18n="foot.stage">Stage</button>
+          <button data-tab="engagements" data-i18n="foot.engagements">Engagements</button>
+          <button data-tab="contact" data-i18n="foot.contact">Contact</button>
         </nav>
       </div>
-      <div class="footer-copy">
+      <div class="footer-copy" data-i18n="footer.copy">
         © <span id="year"></span> Livio Santin · BUT Génie Mécanique et Productique — IUT de Troyes (URCA). Portfolio réalisé en HTML / CSS / JavaScript.
       </div>
     </div>
   </footer>
 
-  <button class="to-top" id="toTop" aria-label="Revenir en haut de la page">
+  <button class="to-top" id="toTop" aria-label="Revenir en haut de la page" data-i18n-attr="aria-label:totop.aria">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
@@ -921,9 +961,9 @@
        puis passer status à "done" avec graded:true, note, img et pdf.
        ===================================================================== */
     var SEMESTERS = [
-      { id: "S3", label: "Semestre 3", sub: "BUT 2 · 2026–2027", status: "En cours" },
-      { id: "S2", label: "Semestre 2", sub: "BUT 1 · 2025–2026" },
-      { id: "S1", label: "Semestre 1", sub: "BUT 1 · 2025–2026" }
+      { id: "S3", label: "Semestre 3", sub: "BUT 2 · 2026–2027", status: "En cours", en: { label: "Semester 3", status: "In progress" } },
+      { id: "S2", label: "Semestre 2", sub: "BUT 1 · 2025–2026", en: { label: "Semester 2" } },
+      { id: "S1", label: "Semestre 1", sub: "BUT 1 · 2025–2026", en: { label: "Semester 1" } }
     ];
 
     var SAE_DATA = [
@@ -934,61 +974,72 @@
         title: "SAÉ 3.1 — Intitulé à venir",
         contexte: "Semestre 3 · Projet à venir",
         org: "Organisation à préciser", solo: false, graded: false, note: "À venir",
-        desc: "Cette SAÉ n'a pas encore commencé. Son contexte, mon rôle, les outils mobilisés et le compte rendu seront ajoutés au fil du projet." },
+        desc: "Cette SAÉ n'a pas encore commencé. Son contexte, mon rôle, les outils mobilisés et le compte rendu seront ajoutés au fil du projet.",
+        en: { title: "SAÉ 3.1 — Title to come", contexte: "Semester 3 · Upcoming project", org: "Organisation to be specified", note: "Coming soon", desc: "This SAÉ has not started yet. Its context, my role, the tools used and the report will be added as the project progresses." } },
       { id: "3.2", sem: "S3", upcoming: true, hidden: true,
         title: "SAÉ 3.2 — Intitulé à venir",
         contexte: "Semestre 3 · Projet à venir",
         org: "Organisation à préciser", solo: false, graded: false, note: "À venir",
-        desc: "Cette SAÉ n'a pas encore commencé. Son contexte, mon rôle, les outils mobilisés et le compte rendu seront ajoutés au fil du projet." },
+        desc: "Cette SAÉ n'a pas encore commencé. Son contexte, mon rôle, les outils mobilisés et le compte rendu seront ajoutés au fil du projet.",
+        en: { title: "SAÉ 3.2 — Title to come", contexte: "Semester 3 · Upcoming project", org: "Organisation to be specified", note: "Coming soon", desc: "This SAÉ has not started yet. Its context, my role, the tools used and the report will be added as the project progresses." } },
       { id: "3.3", sem: "S3", upcoming: true, hidden: true,
         title: "SAÉ 3.3 — Intitulé à venir",
         contexte: "Semestre 3 · Projet à venir",
         org: "Organisation à préciser", solo: false, graded: false, note: "À venir",
-        desc: "Cette SAÉ n'a pas encore commencé. Son contexte, mon rôle, les outils mobilisés et le compte rendu seront ajoutés au fil du projet." },
+        desc: "Cette SAÉ n'a pas encore commencé. Son contexte, mon rôle, les outils mobilisés et le compte rendu seront ajoutés au fil du projet.",
+        en: { title: "SAÉ 3.3 — Title to come", contexte: "Semester 3 · Upcoming project", org: "Organisation to be specified", note: "Coming soon", desc: "This SAÉ has not started yet. Its context, my role, the tools used and the report will be added as the project progresses." } },
 
       /* ---------- Semestre 1 ---------- */
       { id: "1.1", sem: "S1", img: "images/sae11.webp", pdf: "documents/sae11.pdf",
         title: "Analyse d'un produit grand public",
         contexte: "Semestre 1 · Analyse concurrentielle (outil électroportatif)",
         org: "Projet individuel", solo: true, graded: true, note: "14,5/20",
-        desc: "Situation : Salarié au sein d'une entreprise produisant des appareils électroportatifs, j'ai réalisé une analyse concurrentielle approfondie à travers la description technique et fonctionnelle d'un produit concurrent. J'ai procédé au démontage complet d'un outil multifonction afin d'examiner ses composants, détailler son schéma électrique et comprendre précisément à quel besoin et quel usage le produit répond." },
+        desc: "Situation : Salarié au sein d'une entreprise produisant des appareils électroportatifs, j'ai réalisé une analyse concurrentielle approfondie à travers la description technique et fonctionnelle d'un produit concurrent. J'ai procédé au démontage complet d'un outil multifonction afin d'examiner ses composants, détailler son schéma électrique et comprendre précisément à quel besoin et quel usage le produit répond.",
+        en: { title: "Analysis of a consumer product", contexte: "Semester 1 · Competitive analysis (power tool)", org: "Individual project", desc: "Scenario: as an employee of a company that manufactures power tools, I carried out an in-depth competitive analysis through the technical and functional description of a competitor's product. I fully disassembled a multi-tool in order to examine its components, detail its wiring diagram and understand precisely which need and which use the product addresses." } },
       { id: "1.2", sem: "S1", img: "images/sae12.webp", pdf: null, /* compte rendu à fournir : documents/sae12.pdf */
         title: "Dessin technique & Modélisation (Borne de recharge)",
         contexte: "Semestre 1 · Conception collective — borne de recharge",
         org: "En groupe (binôme imposé)", solo: false, graded: true, note: "12,5/20",
-        desc: "Dans le cadre de la conception collective d'une borne de recharge électrique, notre groupe s'est vu attribuer une tâche spécifique. Mon rôle a été de concevoir intégralement la casquette de la borne. Celle-ci devait impérativement répondre à des critères stricts d'étanchéité, d'ergonomie et d'interchangeabilité (facilité de montage/démontage)." },
+        desc: "Dans le cadre de la conception collective d'une borne de recharge électrique, notre groupe s'est vu attribuer une tâche spécifique. Mon rôle a été de concevoir intégralement la casquette de la borne. Celle-ci devait impérativement répondre à des critères stricts d'étanchéité, d'ergonomie et d'interchangeabilité (facilité de montage/démontage).",
+        en: { title: "Technical drawing & 3D modelling (EV charging station)", contexte: "Semester 1 · Collaborative design — EV charging station", org: "Group project (assigned pair)", desc: "As part of the collaborative design of an electric vehicle charging station, our group was assigned a specific task. My role was to design the station's top cover in its entirety. It had to meet strict requirements for watertightness, ergonomics and interchangeability (ease of assembly and disassembly)." } },
       { id: "1.3", sem: "S1", img: "images/sae13.webp", pdf: "documents/sae13.pdf",
         title: "De la maquette au prototypage physique",
         contexte: "Semestre 1 · Suremballeuse — réglage automatisé (CATIA)",
         org: "Projet individuel", solo: true, graded: true, note: "15,5/20",
-        desc: "Objectif : Concevoir l'adaptation du système de réglage des formats sur une suremballeuse industrielle afin de proposer une option de réglage automatisé au client. J'ai modélisé et assemblé l'intégralité du système sur CATIA, incluant la conception de deux brides de fixation spécifiques et l'interface complète entre le moteur et le réducteur." },
+        desc: "Objectif : Concevoir l'adaptation du système de réglage des formats sur une suremballeuse industrielle afin de proposer une option de réglage automatisé au client. J'ai modélisé et assemblé l'intégralité du système sur CATIA, incluant la conception de deux brides de fixation spécifiques et l'interface complète entre le moteur et le réducteur.",
+        en: { title: "From digital mock-up to physical prototype", contexte: "Semester 1 · Overwrapping machine — automated adjustment (CATIA)", org: "Individual project", desc: "Objective: design an adaptation of the format adjustment system on an industrial overwrapping machine in order to offer the customer an automated adjustment option. I modelled and assembled the entire system in CATIA, including the design of two dedicated mounting flanges and the complete interface between the motor and the gearbox." } },
       { id: "1.4", sem: "S1", img: "images/sae14.webp", pdf: "documents/sae14.pdf",
         title: "Organisation structurelle de l'industrie (Cas Claroplast)",
         contexte: "Semestre 1 · Étude d'entreprise — Claroplast SAS (Troyes)",
         org: "En binôme", solo: false, graded: true, note: "19,5/20",
-        desc: "Recherche, prise de contact et interview du PDG de l'entreprise CLAROPLAST SAS (située dans la ZI aux Écrevolles à Troyes). L'objectif était d'analyser la structure de l'entreprise, son parc de machines, ses ressources humaines, ainsi que le parcours professionnel du dirigeant issu d'une formation GMP. Livrables réalisés : un poster de synthèse (affiche technique) et un support PowerPoint pour la soutenance orale." },
+        desc: "Recherche, prise de contact et interview du PDG de l'entreprise CLAROPLAST SAS (située dans la ZI aux Écrevolles à Troyes). L'objectif était d'analyser la structure de l'entreprise, son parc de machines, ses ressources humaines, ainsi que le parcours professionnel du dirigeant issu d'une formation GMP. Livrables réalisés : un poster de synthèse (affiche technique) et un support PowerPoint pour la soutenance orale.",
+        en: { title: "Structural organisation of industry (Claroplast case study)", contexte: "Semester 1 · Company study — Claroplast SAS (Troyes)", org: "In pairs", desc: "Research, first contact and interview with the CEO of CLAROPLAST SAS (located in the ZI aux Écrevolles industrial estate in Troyes). The aim was to analyse the company's structure, its machine fleet and its human resources, as well as the career path of its director, himself a GMP graduate. Deliverables: a summary poster (technical poster) and a PowerPoint presentation for the oral defence." } },
 
       /* ---------- Semestre 2 ---------- */
       { id: "2.2", sem: "S2", img: "images/sae22.svg", pdf: null, /* compte rendu à fournir : documents/sae22.pdf */
         title: "Implantation d'une cellule robotisée",
         contexte: "Semestre 2 · Ligne automatisée — Claroplast (HandlingPRO)",
         org: "Groupe de 4 étudiants", solo: false, graded: true, note: "14/20",
-        desc: "Étude d'implantation et d'optimisation d'une ligne de production et de conditionnement automatisée de tartelettes pour l'entreprise Claroplast. Utilisation du logiciel HandlingPRO pour la modélisation de la cellule, la gestion des flux de production et la simulation des trajectoires du bras robotisé." },
+        desc: "Étude d'implantation et d'optimisation d'une ligne de production et de conditionnement automatisée de tartelettes pour l'entreprise Claroplast. Utilisation du logiciel HandlingPRO pour la modélisation de la cellule, la gestion des flux de production et la simulation des trajectoires du bras robotisé.",
+        en: { title: "Layout of a robotic cell", contexte: "Semester 2 · Automated line — Claroplast (HandlingPRO)", org: "Group of 4 students", desc: "Layout and optimisation study of an automated production and packaging line for tartlets for the company Claroplast. Use of the HandlingPRO software to model the cell, manage production flows and simulate the trajectories of the robot arm." } },
       { id: "2.3", sem: "S2", img: "images/sae23.webp", pdf: "documents/sae23.pdf",
         title: "Fabrication d'une pièce unitaire",
         contexte: "Semestre 2 · Usinage CN — simulation VERICUT",
         org: "Groupe de 3 étudiants", solo: false, graded: true, note: "13/20",
-        desc: "Génération des gammes de fabrication complexes et choix des outils d'usinage. Au sein de l'équipe, j'ai été principalement chargé de la sécurisation des trajectoires et de la simulation de code CN sur le logiciel VERICUT, ainsi que du réglage et du pilotage de la machine-outil à commande numérique en atelier." },
+        desc: "Génération des gammes de fabrication complexes et choix des outils d'usinage. Au sein de l'équipe, j'ai été principalement chargé de la sécurisation des trajectoires et de la simulation de code CN sur le logiciel VERICUT, ainsi que du réglage et du pilotage de la machine-outil à commande numérique en atelier.",
+        en: { title: "Manufacturing a one-off part", contexte: "Semester 2 · CNC machining — VERICUT simulation", org: "Group of 3 students", desc: "Creation of complex machining process plans and selection of cutting tools. Within the team, I was mainly responsible for securing the toolpaths and simulating the CNC code in VERICUT, as well as for setting up and operating the CNC machine tool in the workshop." } },
       { id: "2.4", sem: "S2", img: "images/sae24.webp", pdf: null, /* compte rendu à fournir : documents/sae24.pdf */
         title: "Pilotage de production & Chiffrage",
         contexte: "Semestre 2 · Chargé d'affaires / Méthodes — devis industriel",
         org: "En binôme", solo: false, graded: true, note: "16/20",
-        desc: "Posté en tant que chargé d'affaires / méthode pour établir un devis industriel (gamme, coûts, délais) pour la fabrication de pièces mécaniques. Analyse des contraintes de sous-traitance (Usinage à 60€/h, Mécanosoudure à 25€/ml, Traitements thermiques et de surface avec minimums de commande, logistique et transport à 250€/T avec application d'une marge de 20%). Livrables : Gamme prévisionnelle détaillée, Tableau d'estimation des coûts/délais et planning de Gantt prévisionnel." },
+        desc: "Posté en tant que chargé d'affaires / méthode pour établir un devis industriel (gamme, coûts, délais) pour la fabrication de pièces mécaniques. Analyse des contraintes de sous-traitance (Usinage à 60€/h, Mécanosoudure à 25€/ml, Traitements thermiques et de surface avec minimums de commande, logistique et transport à 250€/T avec application d'une marge de 20%). Livrables : Gamme prévisionnelle détaillée, Tableau d'estimation des coûts/délais et planning de Gantt prévisionnel.",
+        en: { title: "Production management & Cost estimation", contexte: "Semester 2 · Account manager / Manufacturing engineering — industrial quotation", org: "In pairs", desc: "Acting as account manager / manufacturing engineer to draw up an industrial quotation (process plan, costs, lead times) for the manufacture of mechanical parts. Analysis of subcontracting constraints (machining at €60/h, welded fabrication at €25 per linear metre, heat and surface treatments with minimum order quantities, logistics and transport at €250/t, with a 20% margin applied). Deliverables: detailed provisional process plan, cost and lead-time estimate table, and provisional Gantt chart." } },
       { id: "2.5", sem: "S2", img: "images/sae25.webp", pdf: "documents/sae25.pdf", feature: true,
         title: "Conception et dimensionnement d'une pièce de sécurité",
         contexte: "Semestre 2 · Essieu de remorquage d'avions — RDM (CATIA)",
         org: "Groupe de 3 étudiants", solo: false, graded: true, note: "16/20",
-        desc: "Modélisation complète d'un essieu et d'une barre de traction destinés au remorquage au sol de moteurs d'avions. À l'aide de calculs de mécanique générale et de Résistance des Matériaux (RDM/DDS), nous avons déterminé les efforts de traction requis afin de concevoir une structure hautement résistante. Je me suis principalement occupé de la partie conception CAO sur CATIA et de la rédaction finale du compte rendu technique." }
+        desc: "Modélisation complète d'un essieu et d'une barre de traction destinés au remorquage au sol de moteurs d'avions. À l'aide de calculs de mécanique générale et de Résistance des Matériaux (RDM/DDS), nous avons déterminé les efforts de traction requis afin de concevoir une structure hautement résistante. Je me suis principalement occupé de la partie conception CAO sur CATIA et de la rédaction finale du compte rendu technique.",
+        en: { title: "Design and sizing of a safety-critical part", contexte: "Semester 2 · Aircraft towing axle — strength of materials (CATIA)", org: "Group of 3 students", desc: "Complete modelling of an axle and a tow bar designed for the ground towing of aircraft engines. Using general mechanics and strength of materials calculations (RDM/DDS), we determined the required towing forces in order to design a highly resistant structure. I was mainly in charge of the CAD design in CATIA and of writing the final technical report." } }
     ];
 
     var IC = {
@@ -1004,6 +1055,215 @@
 
     function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
     function saeById(id) { for (var i = 0; i < SAE_DATA.length; i++) { if (SAE_DATA[i].id === id) return SAE_DATA[i]; } return null; }
+
+    /* =====================================================================
+       A bis. TRADUCTIONS FR / EN
+       - Textes statiques : attribut data-i18n="clé" (contenu HTML) et
+         data-i18n-attr="attribut:clé;attribut2:clé2" (alt, aria-label, title, href).
+       - I18N.fr est complété automatiquement au chargement à partir du HTML
+         (le français du HTML reste la référence) ; seules les clés utilisées
+         uniquement en JS y sont écrites à la main.
+       - I18N.en contient toutes les traductions anglaises.
+       - SAÉ et semestres : champ en: { title, contexte, org, desc, note... }.
+       ===================================================================== */
+    var LANG = window.__LIVIO_LANG === 'en' ? 'en' : 'fr';
+    var I18N = {
+      fr: {
+        'meta.title': document.title,
+        'sae.open': 'Ouvrir le détail de la SAÉ',
+        'sae.feature': ' · Projet phare',
+        'sae.more': 'Voir le détail',
+        'sae.grade': 'Note obtenue',
+        'sae.status': 'Statut'
+      },
+      en: {
+        'meta.title': 'Livio SANTIN · BUT GMP Portfolio',
+        'meta.desc': 'Portfolio of Livio Santin — 2nd-year student in a BUT (Bachelor of Technology) in Mechanical Engineering & Manufacturing at IUT de Troyes, France. Mechanical design, industrial production, SAÉ projects, internship search.',
+        'sae.open': 'Open the details of SAÉ',
+        'sae.feature': ' · Flagship project',
+        'sae.more': 'View details',
+        'sae.grade': 'Grade',
+        'sae.status': 'Status',
+
+        /* En-tête / navigation */
+        'skip': 'Skip to main content',
+        'brand.aria': 'Livio Santin — back to home',
+        'brand.sub': 'Portfolio · BUT GMP · 2nd year',
+        'nav.aria': 'Main navigation',
+        'nav.home': 'Home',
+        'nav.skills': 'Technical skills',
+        'nav.projects': 'Projects / SAÉ',
+        'nav.stage': 'Internship<span class="nav-dot" aria-hidden="true"></span>',
+        'nav.engagements': 'Commitments &amp; Interests',
+        'nav.contact': 'CV / Contact',
+        'lang.aria': 'Afficher le site en français',
+        'lang.title': 'Version française',
+        'theme.aria': 'Toggle dark mode',
+        'theme.title': 'Light / dark mode',
+        'menu.aria': 'Open the menu',
+
+        /* Accueil */
+        'hero.tag': 'Mechanical Engineering &amp; Manufacturing — Design, production &amp; technical rigour.',
+        'hero.cta1': 'View my projects',
+        'hero.cta2': 'Contact me',
+        'hero.stage': 'Looking for a 2nd-year internship — find out more',
+        'hero.scroll': 'Discover',
+        'about.alt': 'Profile photo of Livio Santin',
+        'about.eyebrow': 'About me',
+        'about.title': 'Mechanical Engineering &amp; Manufacturing student<br>| IUT de Troyes',
+        'about.text': 'Currently in the 2nd year of a BUT (Bachelor of Technology) in Mechanical Engineering &amp; Manufacturing — BUT GMP — I am training in mechanical design and industrial production. Beyond my coursework, I cultivate rigour and precision through my commitment as a reservist in the French Air and Space Force operational reserve and my Private Pilot Licence (PPL) training. Passionate about engineering, I like to understand how things work, whether it is an engine or an aeronautical procedure. As a car mechanics enthusiast, I carry out the technical maintenance of my own vehicle (C6 V6 3.0L), which strengthens my hands-on approach to different systems.',
+        'values.eyebrow': 'My values',
+        'values.title': 'What drives my engineering approach',
+        'val1.t': 'Rigour',
+        'val1.p': 'Shaped by my experience as an operational reservist and my practice of sport shooting, strict compliance with instructions, safety rules and procedures is second nature to me. I apply the same demand for precision to my technical deliverables and engineering analyses.',
+        'val2.t': 'Technical mindset',
+        'val2.p': 'Fascinated by how complex systems work, from engines to weapon mechanisms, the BUT GMP allows me to turn this curiosity into engineering skills: CAD design, mechanical sizing and manufacturing process optimisation.',
+        'val3.t': 'Autonomy',
+        'val3.p': 'My 35 flight hours, including my first solo cross-country flights for the PPL, have built my ability to make quick decisions, manage stress and take responsibility. Whether in project mode or working independently in the workshop, I know how to move forward on my own towards the set objective.',
+
+        /* Compétences */
+        'skills.eyebrow': 'Know-how',
+        'skills.title': 'Technical skills',
+        'skills.lead': 'Three main areas of expertise covered by the BUT GMP programme, from the design office to the production workshop.',
+        's1.num': '01 — Design Office',
+        's1.t': 'Specify and Design',
+        's1.l1': '3D modelling and technical drawings in CATIA V5 and TopSolid<span class="new-tag">BUT 2</span>',
+        's1.l2': 'Mechanical sizing and strength of materials calculations',
+        's1.l3': 'Selection of mechanical components (bearings, guiding systems, motors)',
+        's1.l4': 'Functional analysis (needs diagram, FAST diagram, product specifications)',
+        's1.fb': 'CAD · CATIA V5',
+        's1.alt': 'CAD modelling in CATIA V5',
+        's2.num': '02 — Workshop / Production',
+        's2.t': 'Make and Produce',
+        's2.l1': 'Reading and interpreting technical drawings (GPS geometrical and dimensional tolerancing)',
+        's2.l2': 'Manufacturing process design (machining process plan, tool selection)',
+        's2.l3': 'CNC machine tool programming (CAM)',
+        's2.l4': 'Metrology and quality control of manufactured parts',
+        's2.fb': 'Machining · Milling',
+        's2.alt': 'Modelled machined part',
+        's3.num': '03 — Logistics / Maintenance',
+        's3.t': 'Manage and Organise',
+        's3.l1': 'Layout of a workstation or a production line',
+        's3.l2': 'Team project management (task allocation, meeting milestones)',
+        's3.l3': 'Production planning and monitoring / Maintenance of mechanical systems',
+        's3.fb': 'Layout · Gantt',
+        's3.alt': 'Gripper of the robotic cell',
+        'tools.t': 'Software &amp; tools',
+        'chip.catia': '<b>CATIA V5</b> CAD',
+        'chip.topsolid': '<b>TopSolid</b> CAD · new in BUT 2',
+        'chip.vericut': '<b>VERICUT</b> CNC simulation',
+        'chip.handling': '<b>HandlingPRO</b> robotic cell layout',
+        'chip.fanuc': '<b>FANUC Roboguide</b> robotics',
+        'chip.cura': '<b>Cura</b> 3D printing',
+
+        /* Projets */
+        'proj.eyebrow': 'Achievements',
+        'proj.title': 'Projects / SAÉ',
+        'proj.lead': 'SAÉ (Situations d’Apprentissage et d’Évaluation): hands-on learning &amp; assessment projects. These concrete projects let me apply the theory covered in class to solve real professional problems.',
+        'proj.hint': 'Click on a card to open its full details: grade obtained, context, organisation and PDF report (in French).',
+
+        /* Stage */
+        'stage.eyebrow': '2nd-year internship',
+        'stage.title': 'Internship',
+        'stage.lead': 'The BUT 2 internship is an opportunity to put my design and production skills to work for an industrial company.',
+        'stage.live': '<span class="g-dot" aria-hidden="true"></span>Search in progress',
+        'stage.h': 'I am looking for a 2nd-year BUT GMP internship',
+        'stage.p': 'As a 2nd-year BUT GMP student (Mechanical Engineering &amp; Manufacturing) at IUT de Troyes, I am looking for an internship in an industrial company, preferably in France. Design office, manufacturing engineering or production: I want to contribute to concrete projects, drawing on CAD (CATIA V5, TopSolid), production preparation and teamwork.',
+        'stage.cv': 'Download my CV (in French)',
+        'stage.mailto': 'mailto:livio.santin@icloud.com?subject=Internship%20offer%20%E2%80%94%20BUT%20GMP',
+        'stage.offer': 'Offer me an internship',
+        'fact1.l': 'Status',
+        'fact1.v': 'Searching<small>since October 2026</small>',
+        'fact2.l': 'Period',
+        'fact2.v': 'Semester 4<small>spring 2027 · dates to be confirmed</small>',
+        'fact3.l': 'Duration',
+        'fact3.v': 'To be confirmed<small>according to the IUT calendar</small>',
+        'fact4.l': 'Location',
+        'fact4.v': 'France<small>Troyes and beyond</small>',
+        'stage.bring': 'What I can bring',
+        'bring1': 'Design and technical drawings in CATIA V5 and TopSolid',
+        'bring2': 'Production preparation: machining process plans, VERICUT simulation, cost estimation',
+        'bring3': 'Layout of workstations and robotic cells (HandlingPRO, Roboguide)',
+        'bring4': 'Rigour and respect for procedures gained in the operational reserve and in aviation',
+        'stage.xp': 'Work experience',
+        'tl1.d': '2027 · Semester 4',
+        'tl1.t': '2nd-year BUT GMP internship',
+        'tl1.p': 'Company to be determined — search in progress.',
+        'tl2.d': 'July 2024',
+        'tl.claro': 'Internship — Claroplast SAS, Troyes',
+        'tl2.p': 'Assembly and quality control of PVC joinery (windows and doors) on a production line.',
+        'tl3.d': 'July 2023',
+        'tl3.p': 'Discovering production, keeping up with production rates and quality control of products.',
+
+        /* Engagements */
+        'eng.eyebrow': 'Beyond the classroom',
+        'eng.title': 'Commitments &amp; Interests',
+        'eng.lead': 'Demanding commitments that build my discipline, composure and passion for engineering.',
+        'eng1.t': 'Sport Shooting &amp; Weapon Systems',
+        'eng1.p': 'Passionate about weapon systems engineering and a dedicated sport shooter, I have held a sport shooting firearms licence since I turned 18. This practice demands absolute rigour and strict compliance with safety protocols, values that I apply every day in my Mechanical Engineering projects. Beyond the sporting aspect, I am particularly interested in the technical operation and the design of mechanisms.',
+        'eng2.alt': 'Operational reserve — French Air and Space Force',
+        'eng2.t': 'Operational Reserve (French Air and Space Force)',
+        'eng2.p': 'Committed since 2024 as a reservist in the French Air and Space Force operational reserve, I serve in a Protection Squadron (EP). As an Air Force commando rifleman (Fusilier Commando de l’air), I work in a demanding environment where discipline and team spirit are paramount. My regular participation in operational shooting sessions and air base protection missions strengthens my ability to concentrate.',
+        'eng3.alt': 'Private Pilot Licence (PPL) training',
+        'eng3.t': 'Private Pilot Licence (PPL) Training',
+        'eng3.p': 'Passionate about aviation, I am currently training for my Private Pilot Licence (PPL). With 35 flight hours on single-engine aircraft, including several solo hours, I have developed great rigour in applying procedures and proven stress management. This experience gives me a concrete understanding of flight mechanics.',
+        'eng4.alt': 'Airsoft 3 association',
+        'eng4.t': 'Entrepreneurship &amp; Project Management',
+        'eng4.p': 'As the founder of an association based in Troyes, I lead this project with the aim of developing practical skills in administration, communication and event management. It is an opportunity to combine my passion for replicas and tactics with team project management experience.',
+
+        /* Contact */
+        'contact.eyebrow': 'Let’s keep in touch',
+        'contact.title': 'CV / Contact',
+        'contact.lead': 'Download my full CV (in French) or contact me directly.',
+        'cv.title': 'My background in one document',
+        'cv.lead': 'Education, technical skills and experience gathered in a print-ready CV.',
+        'cv.btn': 'Download my full CV (PDF, in French)',
+        'contact.coords': 'Professional contact details',
+        'contact.reach': 'Get in touch',
+        'contact.mail1': 'Personal email',
+        'contact.mail2': 'University email',
+        'contact.where': 'Location',
+        'contact.linkedin': 'LinkedIn profile',
+        'contact.write': 'Send an email',
+
+        /* Pied de page */
+        'footer.aria': 'Footer navigation',
+        'foot.home': 'Home',
+        'foot.skills': 'Skills',
+        'foot.projects': 'Projects / SAÉ',
+        'foot.stage': 'Internship',
+        'foot.engagements': 'Commitments',
+        'foot.contact': 'Contact',
+        'footer.copy': '© <span id="year"></span> Livio Santin · BUT GMP — IUT de Troyes (URCA). Portfolio built with HTML / CSS / JavaScript.',
+        'totop.aria': 'Back to top of the page',
+
+        /* Modale SAÉ */
+        'modal.close': 'Close the details',
+        'modal.eyebrow': 'Objectives &amp; work carried out',
+        'modal.plan1.t': 'Context',
+        'modal.plan1.v': 'To be completed when the SAÉ starts',
+        'modal.plan2.t': 'My role',
+        'modal.plan2.v': 'To be completed during the project',
+        'modal.plan3.t': 'Tools',
+        'modal.plan3.v': 'To be completed',
+        'modal.plan4.t': 'Result',
+        'modal.plan4.v': 'Grade and deliverables at the end of the SAÉ',
+        'modal.pdf': 'Report (PDF, in French)',
+        'modal.open': 'Open in a new tab',
+        'modal.iframe': 'SAÉ PDF report',
+        'modal.note': 'If the PDF does not display, it has not yet been uploaded to the <code>documents/</code> folder — it will appear automatically once added.',
+        'modal.empty': 'The report will be available at the end of the SAÉ.'
+      }
+    };
+    function t(key) {
+      var d = I18N[LANG];
+      return (d && d[key] != null) ? d[key] : (I18N.fr[key] != null ? I18N.fr[key] : key);
+    }
+    /* Champ traduit d'un objet de données (SAÉ, semestre) : obj.en[field] en anglais, sinon obj[field]. */
+    function L(obj, field) {
+      if (LANG !== 'fr' && obj[LANG] && obj[LANG][field] != null) return obj[LANG][field];
+      return obj[field];
+    }
 
     /* =====================================================================
        B. ONGLETS
@@ -1085,58 +1345,64 @@
 
     /* =====================================================================
        E. PROJETS / SAÉ — rendu par semestre + modale
+       Les textes viennent de SAE_DATA (L() choisit la version en/fr)
+       et des libellés I18N (t()).
        ===================================================================== */
-    function cardHtml(s, i) {
+    function cardHtml(s, i, instant) {
+      var title = L(s, 'title');
       var thumb;
       if (s.upcoming) {
         thumb = '<div class="sae-thumb-upcoming" aria-hidden="true">' + IC.clock + '<span>' + s.id + '</span></div>';
       } else {
         thumb = '<div class="sae-thumb-fallback" aria-hidden="true">' + s.id + '</div>' +
-                '<img src="' + s.img + '" width="1600" height="900" alt="' + esc(s.title) + '" loading="lazy" decoding="async" onerror="this.classList.add(\'media-broken\')" />';
+                '<img src="' + s.img + '" width="1600" height="900" alt="' + esc(title) + '" loading="lazy" decoding="async" onerror="this.classList.add(\'media-broken\')" />';
       }
-      return '<article class="sae-card reveal' + (s.feature ? ' feature' : '') + (s.upcoming ? ' upcoming' : '') + '" style="--i:' + i + '" ' +
+      return '<article class="sae-card reveal' + (instant ? ' in' : '') + (s.feature ? ' feature' : '') + (s.upcoming ? ' upcoming' : '') + '" style="--i:' + i + '" ' +
           'data-sae="' + s.id + '" role="button" tabindex="0" ' +
-          'aria-label="Ouvrir le détail de la SAÉ ' + s.id + ' : ' + esc(s.title) + '">' +
+          'aria-label="' + esc(t('sae.open') + ' ' + s.id + ' : ' + title) + '">' +
           '<div class="sae-thumb">' +
-            '<span class="sae-badge">SAÉ ' + s.id + (s.feature ? ' · Projet phare' : '') + '</span>' +
-            '<span class="sae-grade' + (s.graded ? '' : ' pending') + '">' + esc(s.note) + '</span>' +
+            '<span class="sae-badge">SAÉ ' + s.id + (s.feature ? esc(t('sae.feature')) : '') + '</span>' +
+            '<span class="sae-grade' + (s.graded ? '' : ' pending') + '">' + esc(L(s, 'note')) + '</span>' +
             thumb +
           '</div>' +
           '<div class="sae-body">' +
-            '<h3>' + esc(s.title) + '</h3>' +
-            '<p class="sae-teaser">' + esc(s.desc) + '</p>' +
+            '<h3>' + esc(title) + '</h3>' +
+            '<p class="sae-teaser">' + esc(L(s, 'desc')) + '</p>' +
             '<div class="sae-foot">' +
-              '<span class="sae-org">' + (s.solo ? IC.solo : IC.group) + esc(s.org) + '</span>' +
-              '<span class="sae-more">Voir le détail' + IC.arrow + '</span>' +
+              '<span class="sae-org">' + (s.solo ? IC.solo : IC.group) + esc(L(s, 'org')) + '</span>' +
+              '<span class="sae-more">' + esc(t('sae.more')) + IC.arrow + '</span>' +
             '</div>' +
           '</div>' +
         '</article>';
     }
 
     var semWrap = $('#saeSemesters');
-    if (semWrap) {
+    function renderSemesters(instant) {
+      if (!semWrap) return;
       var html = '';
       SEMESTERS.forEach(function (sem) {
+        // Les SAÉ marquées hidden: true ne sont pas affichées ; un semestre sans carte visible n'a pas d'en-tête.
         var list = SAE_DATA.filter(function (s) { return s.sem === sem.id && !s.hidden; });
         if (!list.length) return;
         var feat = list.filter(function (s) { return s.feature; });
         var rest = list.filter(function (s) { return !s.feature; });
-        html += '<div class="sem-head reveal">' +
-                  '<h2><span class="sem-num">' + sem.id + '</span>' + esc(sem.label) + '</h2>' +
-                  (sem.status ? '<span class="sem-status"><span class="g-dot" aria-hidden="true"></span>' + esc(sem.status) + '</span>'
-                              : '<span class="sem-sub">' + esc(sem.sub) + '</span>') +
+        html += '<div class="sem-head reveal' + (instant ? ' in' : '') + '">' +
+                  '<h2><span class="sem-num">' + sem.id + '</span>' + esc(L(sem, 'label')) + '</h2>' +
+                  (sem.status ? '<span class="sem-status"><span class="g-dot" aria-hidden="true"></span>' + esc(L(sem, 'status')) + '</span>'
+                              : '<span class="sem-sub">' + esc(L(sem, 'sub')) + '</span>') +
                 '</div>';
         if (feat.length) {
           html += '<div class="sae-grid stagger" style="margin-bottom:24px">';
-          feat.forEach(function (s, i) { html += cardHtml(s, i); });
+          feat.forEach(function (s, i) { html += cardHtml(s, i, instant); });
           html += '</div>';
         }
         html += '<div class="sae-grid stagger' + (rest.length === 3 ? ' three' : '') + '">';
-        rest.forEach(function (s, i) { html += cardHtml(s, i); });
+        rest.forEach(function (s, i) { html += cardHtml(s, i, instant); });
         html += '</div>';
       });
       semWrap.innerHTML = html;
     }
+    renderSemesters(false);
 
     var saeModal = document.createElement('div');
     saeModal.className = 'sae-modal';
@@ -1146,7 +1412,7 @@
     saeModal.setAttribute('aria-labelledby', 'saeModalTitle');
     saeModal.innerHTML =
       '<div class="sae-dialog" role="document">' +
-        '<button class="sae-close" type="button" id="saeClose" aria-label="Fermer le détail">' + IC.close + '</button>' +
+        '<button class="sae-close" type="button" id="saeClose" aria-label="Fermer le détail" data-i18n-attr="aria-label:modal.close">' + IC.close + '</button>' +
         '<div class="sae-dialog-head">' +
           '<div class="sae-head-grid">' +
             '<div class="sae-head-left">' +
@@ -1158,48 +1424,46 @@
           '</div>' +
         '</div>' +
         '<div class="sae-dialog-body">' +
-          '<span class="eyebrow">Objectifs &amp; travail réalisé</span>' +
+          '<span class="eyebrow" data-i18n="modal.eyebrow">Objectifs &amp; travail réalisé</span>' +
           '<p id="saeDesc"></p>' +
           '<div class="sae-plan" id="saePlan" hidden>' +
-            '<div><b>Contexte</b><span>À compléter au lancement de la SAÉ</span></div>' +
-            '<div><b>Mon rôle</b><span>À compléter pendant le projet</span></div>' +
-            '<div><b>Outils</b><span>À compléter</span></div>' +
-            '<div><b>Résultat</b><span>Note et livrables à la fin de la SAÉ</span></div>' +
+            '<div><b data-i18n="modal.plan1.t">Contexte</b><span data-i18n="modal.plan1.v">À compléter au lancement de la SAÉ</span></div>' +
+            '<div><b data-i18n="modal.plan2.t">Mon rôle</b><span data-i18n="modal.plan2.v">À compléter pendant le projet</span></div>' +
+            '<div><b data-i18n="modal.plan3.t">Outils</b><span data-i18n="modal.plan3.v">À compléter</span></div>' +
+            '<div><b data-i18n="modal.plan4.t">Résultat</b><span data-i18n="modal.plan4.v">Note et livrables à la fin de la SAÉ</span></div>' +
           '</div>' +
         '</div>' +
         '<div class="sae-dialog-pdf" id="saePdfSection">' +
           '<div class="sae-pdf-head">' +
-            '<h3>' + IC.pdf + 'Compte rendu (PDF)</h3>' +
-            '<a class="btn btn-outline" id="saePdfLink" href="#" target="_blank" rel="noopener">Ouvrir dans un onglet' + IC.ext + '</a>' +
+            '<h3>' + IC.pdf + '<span data-i18n="modal.pdf">Compte rendu (PDF)</span></h3>' +
+            '<a class="btn btn-outline" id="saePdfLink" href="#" target="_blank" rel="noopener"><span data-i18n="modal.open">Ouvrir dans un onglet</span>' + IC.ext + '</a>' +
           '</div>' +
-          '<div class="sae-pdf-frame" id="saePdfFrame"><iframe id="saeFrame" title="Compte rendu PDF de la SAÉ" src="about:blank" loading="lazy"></iframe></div>' +
-          '<p class="sae-pdf-note" id="saePdfNote">Si le PDF ne s\'affiche pas, c\'est qu\'il n\'a pas encore été déposé dans le dossier <code>documents/</code> — il apparaîtra automatiquement une fois ajouté.</p>' +
-          '<div class="sae-pdf-empty" id="saePdfEmpty" hidden>' + IC.clock + '<span>Le compte rendu sera disponible à la fin de la SAÉ.</span></div>' +
+          '<div class="sae-pdf-frame" id="saePdfFrame"><iframe id="saeFrame" title="Compte rendu PDF de la SAÉ" data-i18n-attr="title:modal.iframe" src="about:blank" loading="lazy"></iframe></div>' +
+          '<p class="sae-pdf-note" id="saePdfNote" data-i18n="modal.note">Si le PDF ne s\'affiche pas, c\'est qu\'il n\'a pas encore été déposé dans le dossier <code>documents/</code> — il apparaîtra automatiquement une fois ajouté.</p>' +
+          '<div class="sae-pdf-empty" id="saePdfEmpty" hidden>' + IC.clock + '<span data-i18n="modal.empty">Le compte rendu sera disponible à la fin de la SAÉ.</span></div>' +
         '</div>' +
       '</div>';
     document.body.appendChild(saeModal);
 
     var saeOpener = null;
+    var saeCurrent = null;
 
-    function openSaeModal(id, card) {
-      var s = saeById(id);
-      if (!s) return;
-      saeOpener = card || null;
-
-      $('#saeKicker').textContent = 'SAÉ ' + s.id + (s.feature ? ' · Projet phare' : '');
-      $('#saeModalTitle').textContent = s.title;
-      $('#saeCtx').innerHTML = IC.ctx + '<span>' + esc(s.contexte) + '</span>';
-      $('#saeOrg').innerHTML = (s.solo ? IC.solo : IC.group) + '<span>' + esc(s.org) + '</span>';
-      $('#saeDesc').textContent = s.desc;
+    // Remplit la modale (appelé à l'ouverture et lors d'un changement de langue).
+    function fillSaeModal(s) {
+      $('#saeKicker').textContent = 'SAÉ ' + s.id + (s.feature ? t('sae.feature') : '');
+      $('#saeModalTitle').textContent = L(s, 'title');
+      $('#saeCtx').innerHTML = IC.ctx + '<span>' + esc(L(s, 'contexte')) + '</span>';
+      $('#saeOrg').innerHTML = (s.solo ? IC.solo : IC.group) + '<span>' + esc(L(s, 'org')) + '</span>';
+      $('#saeDesc').textContent = L(s, 'desc');
       $('#saePlan').hidden = !s.upcoming;
 
       var grade = $('#saeGrade');
       if (s.graded) {
         grade.className = 'sae-grade-badge graded';
-        grade.innerHTML = '<span class="g-label">Note obtenue</span><span class="g-value">' + esc(s.note) + '</span>';
+        grade.innerHTML = '<span class="g-label">' + esc(t('sae.grade')) + '</span><span class="g-value">' + esc(L(s, 'note')) + '</span>';
       } else {
         grade.className = 'sae-grade-badge pending';
-        grade.innerHTML = '<span class="g-label">Statut</span><span class="g-value"><span class="g-dot"></span>' + esc(s.note) + '</span>';
+        grade.innerHTML = '<span class="g-label">' + esc(t('sae.status')) + '</span><span class="g-value"><span class="g-dot"></span>' + esc(L(s, 'note')) + '</span>';
       }
 
       var hasPdf = !!s.pdf;
@@ -1209,7 +1473,18 @@
       $('#saePdfNote').hidden = !hasPdf;
       $('#saePdfLink').hidden = !hasPdf;
       $('#saePdfEmpty').hidden = hasPdf;
-      if (hasPdf) { $('#saeFrame').src = s.pdf; $('#saePdfLink').href = s.pdf; }
+      if (hasPdf) {
+        if ($('#saeFrame').getAttribute('src') !== s.pdf) $('#saeFrame').src = s.pdf;
+        $('#saePdfLink').href = s.pdf;
+      }
+    }
+
+    function openSaeModal(id, card) {
+      var s = saeById(id);
+      if (!s) return;
+      saeOpener = card || null;
+      saeCurrent = s;
+      fillSaeModal(s);
 
       saeModal.classList.add('open');
       document.body.classList.add('modal-open');
@@ -1222,8 +1497,11 @@
       saeModal.classList.remove('open');
       document.body.classList.remove('modal-open');
       $('#saeFrame').src = 'about:blank';
+      // Si les cartes ont été régénérées (changement de langue), on retrouve la carte d'origine.
+      if (saeOpener && !document.body.contains(saeOpener) && saeCurrent) saeOpener = semWrap && semWrap.querySelector('[data-sae="' + saeCurrent.id + '"]');
       if (saeOpener && typeof saeOpener.focus === 'function') saeOpener.focus();
       saeOpener = null;
+      saeCurrent = null;
     }
     function requestCloseSae() {
       if (history.state && history.state.saeModal) history.back();
@@ -1322,8 +1600,65 @@
     });
 
     /* =====================================================================
-       H. INITIALISATION
+       H. LANGUE — setLang(lang)
        ===================================================================== */
+    var i18nEls = $all('[data-i18n]');
+    var i18nAttrEls = $all('[data-i18n-attr]');
+    var metaDesc = $('meta[name="description"]');
+    // Le français de référence est lu directement dans le HTML (une seule source à maintenir).
+    i18nEls.forEach(function (el) { var k = el.getAttribute('data-i18n'); if (I18N.fr[k] == null) I18N.fr[k] = el.innerHTML; });
+    i18nAttrEls.forEach(function (el) {
+      el.getAttribute('data-i18n-attr').split(';').forEach(function (pair) {
+        var p = pair.split(':'), attr = p[0].trim(), k = (p[1] || '').trim();
+        if (attr && k && I18N.fr[k] == null) I18N.fr[k] = el.getAttribute(attr);
+      });
+    });
+    if (metaDesc && I18N.fr['meta.desc'] == null) I18N.fr['meta.desc'] = metaDesc.getAttribute('content');
+
+    function setLang(lang, userChoice) {
+      LANG = (lang === 'en') ? 'en' : 'fr';
+      var root = document.documentElement;
+      root.setAttribute('lang', LANG);
+      i18nEls.forEach(function (el) { var v = t(el.getAttribute('data-i18n')); if (el.innerHTML !== v) el.innerHTML = v; });
+      i18nAttrEls.forEach(function (el) {
+        el.getAttribute('data-i18n-attr').split(';').forEach(function (pair) {
+          var p = pair.split(':'), attr = p[0].trim(), k = (p[1] || '').trim();
+          if (attr && k) el.setAttribute(attr, t(k));
+        });
+      });
+      document.title = t('meta.title');
+      if (metaDesc) metaDesc.setAttribute('content', t('meta.desc'));
+      var year = $('#year'); if (year) year.textContent = new Date().getFullYear();
+
+      // Boutons de langue (en-tête + menu mobile)
+      $all('#langToggle [data-l]').forEach(function (s) { s.classList.toggle('on', s.getAttribute('data-l') === LANG); });
+      $all('[data-set-lang]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-set-lang') === LANG ? 'true' : 'false'); });
+
+      // Contenus générés en JS
+      if (userChoice) {
+        renderSemesters(true);
+        if (saeCurrent && saeModal.classList.contains('open')) fillSaeModal(saeCurrent);
+        try { localStorage.setItem('livio-lang', LANG); } catch (e) {}
+        // L'URL reflète la langue choisie (lien partageable, et cohérent au rechargement)
+        try {
+          var url = new URL(location.href);
+          if (LANG === 'en') url.searchParams.set('lang', 'en'); else url.searchParams.delete('lang');
+          history.replaceState(history.state, '', url.pathname + url.search + url.hash);
+        } catch (e) {}
+      }
+      root.classList.remove('i18n-pending');
+    }
+
+    document.addEventListener('click', function (e) {
+      var opt = e.target.closest('[data-set-lang]');
+      if (opt) { setLang(opt.getAttribute('data-set-lang'), true); return; }
+      if (e.target.closest('#langToggle')) setLang(LANG === 'fr' ? 'en' : 'fr', true);
+    });
+
+    /* =====================================================================
+       I. INITIALISATION
+       ===================================================================== */
+    setLang(LANG, false); // les cartes SAÉ ont déjà été générées dans la bonne langue (section E)
     $('#year').textContent = new Date().getFullYear();
     var startId = (location.hash || '#accueil').slice(1);
     var startEl = document.getElementById(startId);

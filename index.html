@@ -23,6 +23,29 @@
   <meta name="theme-color" content="#0e1116" />
   <title>Livio SANTIN · Portfolio BUT GMP</title>
 
+  <!-- SEO & partage -->
+  <link rel="canonical" href="https://santinlivio9-hub.github.io/Portfolio-Santin/" />
+  <link rel="alternate" hreflang="fr" href="https://santinlivio9-hub.github.io/Portfolio-Santin/" />
+  <link rel="alternate" hreflang="en" href="https://santinlivio9-hub.github.io/Portfolio-Santin/?lang=en" />
+  <link rel="alternate" hreflang="x-default" href="https://santinlivio9-hub.github.io/Portfolio-Santin/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Livio Santin · Portfolio" />
+  <meta property="og:title" content="Livio Santin — Portfolio BUT GMP" />
+  <meta property="og:description" content="Étudiant en 2e année de BUT Génie Mécanique &amp; Productique à l'IUT de Troyes : conception, production, projets SAÉ. En recherche de stage de 2e année." />
+  <meta property="og:url" content="https://santinlivio9-hub.github.io/Portfolio-Santin/" />
+  <meta property="og:image" content="https://santinlivio9-hub.github.io/Portfolio-Santin/images/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Livio Santin — Portfolio BUT GMP · Étudiant en Génie Mécanique &amp; Productique · IUT de Troyes" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:locale:alternate" content="en_GB" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Livio Santin — Portfolio BUT GMP" />
+  <meta name="twitter:description" content="Étudiant en 2e année de BUT Génie Mécanique &amp; Productique à l'IUT de Troyes : conception, production, projets SAÉ." />
+  <meta name="twitter:image" content="https://santinlivio9-hub.github.io/Portfolio-Santin/images/og-image.jpg" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
   <script>
     (function () {
       var DEFAULT_THEME = 'light';
@@ -348,6 +371,7 @@
     .g-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 7px; animation: pulse 1.6s ease-in-out infinite; }
     @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(245,163,0,.55); } 50% { box-shadow: 0 0 0 6px rgba(245,163,0,0); } }
     .sae-dialog-body { padding: 28px 30px 6px; }
+    .sae-dialog:has(#saePdfSection[hidden]) .sae-dialog-body { padding-bottom: 32px; }
     .sae-dialog-body p { color: var(--text-soft); font-size: 1.02rem; line-height: 1.72; }
     .sae-plan { margin-top: 18px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .sae-plan div { background: var(--surface-2); border: 1px dashed var(--border-2); border-radius: var(--r-md); padding: 14px 16px; }
@@ -487,6 +511,11 @@
     }
     @media (max-width: 420px) {
       .container { padding: 0 16px; }
+      .header-inner { padding: 0 16px; gap: 10px; }
+      .header-actions { gap: 6px; }
+      .lang-toggle { padding: 0 10px; }
+      .brand { gap: 10px; }
+      .brand-name { white-space: nowrap; }
       .hero-cta { flex-direction: column; }
       .hero-cta .btn { width: 100%; justify-content: center; }
       .stage-facts { grid-template-columns: 1fr; }

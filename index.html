@@ -93,6 +93,7 @@
     a { color: inherit; text-decoration: none; }
     img, svg { display: block; max-width: 100%; }
     ul { list-style: none; }
+    sup { line-height: 0; }
     :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
     .skip-link { position: absolute; left: 12px; top: -60px; background: var(--accent); color: var(--accent-ink); padding: 10px 16px; border-radius: var(--r-sm); font-weight: 600; z-index: 2000; transition: top var(--t-fast); }
     .skip-link:focus { top: 12px; }
@@ -509,7 +510,7 @@
     <section class="page active" id="accueil" role="tabpanel" tabindex="-1">
       <div class="hero">
         <div class="hero-fallback" aria-hidden="true"></div>
-        <img class="hero-img" src="images/banniere_moteur.png" alt="" onerror="this.classList.add('media-broken')" />
+        <img class="hero-img" src="images/banniere.svg" alt="" onerror="this.classList.add('media-broken')" />
         <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
         <div class="hero-content">
           <span class="hero-badge"><span class="dot"></span>IUT de Troyes · URCA · BUT 2</span>
@@ -522,7 +523,7 @@
             </button>
             <button class="btn btn-ghost" data-tab="contact">Me contacter</button>
           </div>
-          <button class="hero-stage" data-tab="stage"><span class="g-dot" aria-hidden="true"></span>En recherche de stage de 2<sup>e</sup> année — en savoir plus</button>
+          <button class="hero-stage" data-tab="stage"><span class="g-dot" aria-hidden="true"></span><span>En recherche de stage de 2<sup>e</sup> année — en savoir plus</span></button>
         </div>
         <div class="scroll-hint" aria-hidden="true">
           <span>Découvrir</span>
@@ -926,18 +927,20 @@
     ];
 
     var SAE_DATA = [
-      /* ---------- Semestre 3 (BUT 2) — à venir ---------- */
-      { id: "3.1", sem: "S3", upcoming: true,
+      /* ---------- Semestre 3 (BUT 2) — à venir ----------
+         hidden: true => la carte n'est pas affichée (et l'en-tête « Semestre 3 »
+         disparaît s'il n'y a aucune carte visible). Supprimer hidden pour réactiver. */
+      { id: "3.1", sem: "S3", upcoming: true, hidden: true,
         title: "SAÉ 3.1 — Intitulé à venir",
         contexte: "Semestre 3 · Projet à venir",
         org: "Organisation à préciser", solo: false, graded: false, note: "À venir",
         desc: "Cette SAÉ n'a pas encore commencé. Son contexte, mon rôle, les outils mobilisés et le compte rendu seront ajoutés au fil du projet." },
-      { id: "3.2", sem: "S3", upcoming: true,
+      { id: "3.2", sem: "S3", upcoming: true, hidden: true,
         title: "SAÉ 3.2 — Intitulé à venir",
         contexte: "Semestre 3 · Projet à venir",
         org: "Organisation à préciser", solo: false, graded: false, note: "À venir",
         desc: "Cette SAÉ n'a pas encore commencé. Son contexte, mon rôle, les outils mobilisés et le compte rendu seront ajoutés au fil du projet." },
-      { id: "3.3", sem: "S3", upcoming: true,
+      { id: "3.3", sem: "S3", upcoming: true, hidden: true,
         title: "SAÉ 3.3 — Intitulé à venir",
         contexte: "Semestre 3 · Projet à venir",
         org: "Organisation à préciser", solo: false, graded: false, note: "À venir",
@@ -949,7 +952,7 @@
         contexte: "Semestre 1 · Analyse concurrentielle (outil électroportatif)",
         org: "Projet individuel", solo: true, graded: true, note: "14,5/20",
         desc: "Situation : Salarié au sein d'une entreprise produisant des appareils électroportatifs, j'ai réalisé une analyse concurrentielle approfondie à travers la description technique et fonctionnelle d'un produit concurrent. J'ai procédé au démontage complet d'un outil multifonction afin d'examiner ses composants, détailler son schéma électrique et comprendre précisément à quel besoin et quel usage le produit répond." },
-      { id: "1.2", sem: "S1", img: "images/sae12.png", pdf: "documents/sae12.pdf",
+      { id: "1.2", sem: "S1", img: "images/sae12.png", pdf: null, /* compte rendu à fournir : documents/sae12.pdf */
         title: "Dessin technique & Modélisation (Borne de recharge)",
         contexte: "Semestre 1 · Conception collective — borne de recharge",
         org: "En groupe (binôme imposé)", solo: false, graded: true, note: "12,5/20",
@@ -966,7 +969,7 @@
         desc: "Recherche, prise de contact et interview du PDG de l'entreprise CLAROPLAST SAS (située dans la ZI aux Écrevolles à Troyes). L'objectif était d'analyser la structure de l'entreprise, son parc de machines, ses ressources humaines, ainsi que le parcours professionnel du dirigeant issu d'une formation GMP. Livrables réalisés : un poster de synthèse (affiche technique) et un support PowerPoint pour la soutenance orale." },
 
       /* ---------- Semestre 2 ---------- */
-      { id: "2.2", sem: "S2", img: "images/sae22.png", pdf: "documents/sae22.pdf",
+      { id: "2.2", sem: "S2", img: "images/sae22.svg", pdf: null, /* compte rendu à fournir : documents/sae22.pdf */
         title: "Implantation d'une cellule robotisée",
         contexte: "Semestre 2 · Ligne automatisée — Claroplast (HandlingPRO)",
         org: "Groupe de 4 étudiants", solo: false, graded: true, note: "14/20",
@@ -976,7 +979,7 @@
         contexte: "Semestre 2 · Usinage CN — simulation VERICUT",
         org: "Groupe de 3 étudiants", solo: false, graded: true, note: "13/20",
         desc: "Génération des gammes de fabrication complexes et choix des outils d'usinage. Au sein de l'équipe, j'ai été principalement chargé de la sécurisation des trajectoires et de la simulation de code CN sur le logiciel VERICUT, ainsi que du réglage et du pilotage de la machine-outil à commande numérique en atelier." },
-      { id: "2.4", sem: "S2", img: "images/sae24.png", pdf: "documents/sae24.pdf",
+      { id: "2.4", sem: "S2", img: "images/sae24.png", pdf: null, /* compte rendu à fournir : documents/sae24.pdf */
         title: "Pilotage de production & Chiffrage",
         contexte: "Semestre 2 · Chargé d'affaires / Méthodes — devis industriel",
         org: "En binôme", solo: false, graded: true, note: "16/20",
@@ -1114,7 +1117,7 @@
     if (semWrap) {
       var html = '';
       SEMESTERS.forEach(function (sem) {
-        var list = SAE_DATA.filter(function (s) { return s.sem === sem.id; });
+        var list = SAE_DATA.filter(function (s) { return s.sem === sem.id && !s.hidden; });
         if (!list.length) return;
         var feat = list.filter(function (s) { return s.feature; });
         var rest = list.filter(function (s) { return !s.feature; });
@@ -1164,7 +1167,7 @@
             '<div><b>Résultat</b><span>Note et livrables à la fin de la SAÉ</span></div>' +
           '</div>' +
         '</div>' +
-        '<div class="sae-dialog-pdf">' +
+        '<div class="sae-dialog-pdf" id="saePdfSection">' +
           '<div class="sae-pdf-head">' +
             '<h3>' + IC.pdf + 'Compte rendu (PDF)</h3>' +
             '<a class="btn btn-outline" id="saePdfLink" href="#" target="_blank" rel="noopener">Ouvrir dans un onglet' + IC.ext + '</a>' +
@@ -1200,6 +1203,8 @@
       }
 
       var hasPdf = !!s.pdf;
+      // Pas de PDF (pdf: null) : on masque tout le bloc « Compte rendu », sauf pour une SAÉ à venir.
+      $('#saePdfSection').hidden = !hasPdf && !s.upcoming;
       $('#saePdfFrame').hidden = !hasPdf;
       $('#saePdfNote').hidden = !hasPdf;
       $('#saePdfLink').hidden = !hasPdf;

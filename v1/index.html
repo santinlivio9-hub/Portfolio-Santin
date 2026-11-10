@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  PORTFOLIO PROFESSIONNEL — Livio SANTIN · VERSION 1 (archive, BUT GMP 1re année)
+  BUT Génie Mécanique et Productique (GMP) · IUT de Troyes (URCA)
+  ----------------------------------------------------------------------------
+  Archive de la version 1 du portfolio (contenu de 1re année).
+  La version actuelle est à la racine du site.
+  ============================================================================
+-->
+<html lang="fr" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portfolio de Livio Santin — Étudiant en 2e année de BUT Génie Mécanique et Productique (GMP) à l'IUT de Troyes. Conception mécanique, production industrielle, projets SAÉ, recherche de stage." />
+  <meta name="author" content="Livio Santin" />
+  <meta name="theme-color" content="#0e1116" />
+  <title>Livio SANTIN · Portfolio BUT GMP</title>
+
+  <script>
+    (function () {
+      var DEFAULT_THEME = 'light';
+      try {
+        var saved = localStorage.getItem('livio-theme');
+        document.documentElement.setAttribute('data-theme', saved || DEFAULT_THEME);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', DEFAULT_THEME);
+      }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ======================================================================
+       1. VARIABLES DE THÈME
+       ====================================================================== */
+    :root {
+      --accent:        #F5A300;
+      --accent-2:      #FF7A18;
+      --accent-strong: #E8590C;
+      --accent-ink:    #161A20;
+      --r-sm: 8px;  --r-md: 14px;  --r-lg: 20px;  --r-xl: 28px;
+      --shadow-sm: 0 1px 2px rgba(16,20,26,.06), 0 1px 3px rgba(16,20,26,.05);
+      --shadow-md: 0 4px 12px rgba(16,20,26,.08), 0 2px 4px rgba(16,20,26,.05);
+      --shadow-lg: 0 18px 40px rgba(16,20,26,.14), 0 6px 14px rgba(16,20,26,.08);
+      --ease: cubic-bezier(.22,.61,.36,1);
+      --t-fast: .18s var(--ease);
+      --t-med:  .3s  var(--ease);
+      --maxw: 1180px;
+      --header-h: 72px;
+    }
+    [data-theme="light"] {
+      --bg:#FAFAFB; --bg-2:#F2F4F7; --surface:#FFFFFF; --surface-2:#F6F8FA;
+      --text:#181C22; --text-soft:#3C4350; --text-mut:#687180;
+      --border:#E6E9EE; --border-2:#D7DCE3;
+      --banner-bg:#14181E; --banner-tx:#F4F6F9;
+      --header-bg:rgba(255,255,255,.82); --grid-line:rgba(20,24,30,.05);
+    }
+    [data-theme="dark"] {
+      --bg:#0E1116; --bg-2:#0B0E12; --surface:#161B22; --surface-2:#1C232C;
+      --text:#E8ECF1; --text-soft:#C2CAD4; --text-mut:#8B95A3;
+      --border:#262D37; --border-2:#323A46;
+      --banner-bg:#0A0D11; --banner-tx:#F4F6F9;
+      --header-bg:rgba(14,17,22,.82); --grid-line:rgba(255,255,255,.04);
+      --accent:#FFB020;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+      --shadow-md:0 6px 18px rgba(0,0,0,.45);
+      --shadow-lg:0 22px 48px rgba(0,0,0,.55);
+    }
+
+    /* ======================================================================
+       2. BASE
+       ====================================================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    [hidden] { display: none !important; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.65; font-size: 16px;
+      -webkit-font-smoothing: antialiased; transition: background var(--t-med), color var(--t-med);
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter', sans-serif; line-height: 1.15; letter-spacing: -.01em; color: var(--text); font-weight: 600; }
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; max-width: 100%; }
+    ul { list-style: none; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .skip-link { position: absolute; left: 12px; top: -60px; background: var(--accent); color: var(--accent-ink); padding: 10px 16px; border-radius: var(--r-sm); font-weight: 600; z-index: 2000; transition: top var(--t-fast); }
+    .skip-link:focus { top: 12px; }
+    .container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+    .section-pad { padding: 72px 0; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: .14em; font-size: .74rem; font-weight: 600; color: var(--accent-strong); margin-bottom: 14px; }
+    [data-theme="dark"] .eyebrow { color: var(--accent); }
+    .eyebrow::before { content: ""; width: 26px; height: 2px; background: var(--accent); border-radius: 2px; }
+    .section-title { font-size: clamp(1.6rem, 3.2vw, 2.3rem); margin-bottom: 10px; }
+    .section-lead { color: var(--text-mut); max-width: 680px; font-size: 1.04rem; }
+    .hazard { height: 8px; width: 100%; background: repeating-linear-gradient(-45deg, var(--accent) 0 16px, #14181e 16px 32px); opacity: .9; }
+
+    /* ======================================================================
+       3. EN-TÊTE / NAVIGATION
+       ====================================================================== */
+    .site-header { position: sticky; top: 0; z-index: 1000; background: var(--header-bg); backdrop-filter: saturate(160%) blur(12px); -webkit-backdrop-filter: saturate(160%) blur(12px); border-bottom: 1px solid var(--border); transition: background var(--t-med), border-color var(--t-med); }
+    .header-inner { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; height: var(--header-h); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 12px; cursor: pointer; background: none; border: 0; text-align: left; color: var(--text); }
+    .brand-mark { width: 40px; height: 40px; border-radius: 11px; flex: none; display: grid; place-items: center; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--accent-ink); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: -.02em; box-shadow: var(--shadow-sm); }
+    .brand-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.06rem; letter-spacing: -.01em; }
+    .brand-name span { color: var(--text-mut); font-weight: 500; }
+    .brand-sub { display: block; font-size: .72rem; color: var(--text-mut); font-weight: 500; letter-spacing: .02em; font-family: 'Inter', sans-serif; }
+    .nav { display: flex; align-items: center; gap: 2px; }
+    .nav-btn { position: relative; border: 0; background: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 500; color: var(--text-soft); padding: 9px 12px; border-radius: var(--r-sm); transition: color var(--t-fast), background var(--t-fast); white-space: nowrap; }
+    .nav-btn:hover { color: var(--text); background: var(--surface-2); }
+    .nav-btn::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 2px; background: var(--accent); border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform var(--t-med); }
+    .nav-btn[aria-selected="true"] { color: var(--text); font-weight: 600; }
+    .nav-btn[aria-selected="true"]::after { transform: scaleX(1); }
+    .nav-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin-left: 6px; vertical-align: middle; box-shadow: 0 0 0 3px rgba(245,163,0,.22); }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .icon-btn { width: 42px; height: 42px; border-radius: var(--r-sm); border: 1px solid var(--border-2); background: var(--surface); color: var(--text); cursor: pointer; display: grid; place-items: center; transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast); }
+    .icon-btn:hover { background: var(--surface-2); transform: translateY(-1px); }
+    .icon-btn svg { width: 20px; height: 20px; }
+    .theme-toggle .moon { display: none; }
+    [data-theme="dark"] .theme-toggle .sun { display: none; }
+    [data-theme="dark"] .theme-toggle .moon { display: block; }
+    .burger { display: none; }
+    @media (max-width: 1040px) {
+      .nav { position: fixed; inset: var(--header-h) 0 auto 0; flex-direction: column; align-items: stretch; gap: 2px; background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 18px 22px; box-shadow: var(--shadow-lg); transform: translateY(-120%); opacity: 0; visibility: hidden; transition: transform var(--t-med), opacity var(--t-med), visibility var(--t-med); max-height: calc(100vh - var(--header-h)); overflow-y: auto; }
+      .nav.open { transform: translateY(0); opacity: 1; visibility: visible; }
+      .nav-btn { padding: 14px 16px; font-size: 1rem; text-align: left; }
+      .nav-btn::after { display: none; }
+      .nav-btn[aria-selected="true"] { background: var(--surface-2); box-shadow: inset 3px 0 0 var(--accent); }
+      .burger { display: grid; }
+    }
+
+    /* ======================================================================
+       4. PAGES
+       ====================================================================== */
+    .page { display: none; }
+    .page.active { display: block; animation: pageIn .5s var(--ease) both; }
+    @keyframes pageIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ======================================================================
+       5. BANDEAUX
+       ====================================================================== */
+    .hero { position: relative; min-height: clamp(440px, 72vh, 640px); display: grid; place-items: center; text-align: center; color: #fff; overflow: hidden; isolation: isolate; background: #0c0f13; }
+    .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+    .hero-img.media-broken { display: none; }
+    .hero-fallback { position: absolute; inset: 0; z-index: -1; background: radial-gradient(1100px 500px at 70% -10%, rgba(245,163,0,.28), transparent 60%), linear-gradient(135deg, #11151b 0%, #1b2027 55%, #0c0f13 100%); }
+    .hero-canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+    .hero::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(10,13,17,.35), rgba(10,13,17,.78)), linear-gradient(120deg, rgba(245,163,0,.16), transparent 45%); background-size: 100% 100%, 200% 200%; animation: heroGlow 14s ease-in-out infinite alternate; }
+    @keyframes heroGlow { from { background-position: 0 0, 0% 50%; } to { background-position: 0 0, 100% 50%; } }
+    .hero-content { position: relative; z-index: 2; padding: 32px 24px; max-width: 880px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 9px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(6px); color: #fff; padding: 7px 15px; border-radius: 999px; font-size: .8rem; font-weight: 500; letter-spacing: .03em; margin-bottom: 22px; }
+    .hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(245,163,0,.25); }
+    .hero h1 { color: #fff; font-size: clamp(2.4rem, 7vw, 4.6rem); font-weight: 700; letter-spacing: -.02em; text-shadow: 0 4px 30px rgba(0,0,0,.4); }
+    .hero h1 .accent { color: var(--accent); }
+    .hero-tag { margin-top: 16px; font-size: clamp(1rem, 2.4vw, 1.28rem); color: rgba(255,255,255,.86); font-weight: 400; }
+    .hero-cta { margin-top: 34px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .hero-stage { margin-top: 22px; display: inline-flex; align-items: center; gap: 10px; font-size: .9rem; color: rgba(255,255,255,.88); background: rgba(245,163,0,.14); border: 1px solid rgba(245,163,0,.4); padding: 8px 16px; border-radius: 999px; cursor: pointer; font-family: 'Inter', sans-serif; }
+    .hero-stage:hover { background: rgba(245,163,0,.24); }
+    .scroll-hint { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 2; color: rgba(255,255,255,.7); font-size: .76rem; letter-spacing: .12em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .scroll-hint svg { width: 22px; height: 22px; animation: bob 1.8s ease-in-out infinite; }
+    @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+    .page-banner { position: relative; background: var(--banner-bg); color: var(--banner-tx); padding: 56px 0; overflow: hidden; border-bottom: 4px solid var(--accent); }
+    .page-banner::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px); background-size: 34px 34px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 35%); mask-image: linear-gradient(90deg, transparent, #000 35%); }
+    .page-banner::after { content: ""; position: absolute; right: -120px; top: -120px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(245,163,0,.35), transparent 65%); filter: blur(8px); }
+    .page-banner .container { position: relative; z-index: 1; }
+    .page-banner .eyebrow { color: var(--accent); }
+    .page-banner h1 { color: #fff; font-size: clamp(1.9rem, 5vw, 3rem); }
+    .page-banner p { color: rgba(255,255,255,.78); margin-top: 10px; max-width: 640px; }
+
+    /* ======================================================================
+       6. BOUTONS
+       ====================================================================== */
+    .btn { display: inline-flex; align-items: center; gap: 9px; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600; font-size: .96rem; padding: 13px 24px; border-radius: var(--r-sm); border: 1px solid transparent; transition: transform var(--t-fast), box-shadow var(--t-fast), background var(--t-fast), border-color var(--t-fast); -webkit-tap-highlight-color: transparent; }
+    .btn svg { width: 19px; height: 19px; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--accent-ink); box-shadow: var(--shadow-md); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .btn-ghost { background: rgba(255,255,255,.08); color: #fff; border-color: rgba(255,255,255,.28); backdrop-filter: blur(4px); }
+    .btn-ghost:hover { background: rgba(255,255,255,.16); transform: translateY(-2px); }
+    .btn-outline { background: var(--surface); color: var(--text); border-color: var(--border-2); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent-strong); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+    [data-theme="dark"] .btn-outline:hover { color: var(--accent); }
+
+    /* ======================================================================
+       7. ACCUEIL
+       ====================================================================== */
+    .profile { display: grid; grid-template-columns: 200px 1fr; gap: 40px; align-items: center; }
+    .avatar { position: relative; width: 200px; height: 200px; border-radius: 50%; overflow: hidden; flex: none; box-shadow: var(--shadow-lg); border: 4px solid var(--surface); outline: 2px solid var(--border); background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+    .avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .avatar img.media-broken { display: none; }
+    .avatar-fallback { position: absolute; inset: 0; display: grid; place-items: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 3.4rem; color: var(--accent-ink); }
+    .profile h2 { font-size: clamp(1.35rem, 3.4vw, 1.9rem); }
+    .profile .intro-text { margin-top: 16px; color: var(--text-soft); font-size: 1.04rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .value-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 30px 26px; box-shadow: var(--shadow-sm); transition: transform var(--t-med), box-shadow var(--t-med), border-color var(--t-med); position: relative; overflow: hidden; }
+    .value-card::before { content: ""; position: absolute; left: 0; top: 0; height: 4px; width: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transform: scaleX(0); transform-origin: left; transition: transform var(--t-med); }
+    .value-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--border-2); }
+    .value-card:hover::before { transform: scaleX(1); }
+    .value-icon { width: 54px; height: 54px; border-radius: 14px; display: grid; place-items: center; background: linear-gradient(135deg, rgba(245,163,0,.16), rgba(255,122,24,.12)); color: var(--accent-strong); margin-bottom: 18px; }
+    [data-theme="dark"] .value-icon { color: var(--accent); }
+    .value-icon svg { width: 28px; height: 28px; }
+    .value-card h3 { font-size: 1.22rem; margin-bottom: 8px; }
+    .value-card p { color: var(--text-mut); font-size: .96rem; }
+
+    /* ======================================================================
+       8. COMPÉTENCES
+       ====================================================================== */
+    .skill-block { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; padding: 38px 0; border-bottom: 1px solid var(--border); }
+    .skill-block:last-child { border-bottom: 0; }
+    .skill-block.reverse .skill-text { order: 2; }
+    .skill-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; color: var(--accent-strong); letter-spacing: .04em; }
+    [data-theme="dark"] .skill-num { color: var(--accent); }
+    .skill-block h3 { font-size: clamp(1.3rem, 3vw, 1.7rem); margin: 6px 0 18px; }
+    .skill-list li { position: relative; padding: 9px 0 9px 32px; color: var(--text-soft); border-bottom: 1px dashed var(--border); font-size: .98rem; }
+    .skill-list li:last-child { border-bottom: 0; }
+    .skill-list li::before { content: ""; position: absolute; left: 4px; top: 16px; width: 14px; height: 14px; border-radius: 4px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 0 0 4px rgba(245,163,0,.14); }
+    .new-tag { display: inline-block; margin-left: 8px; font-family: 'Space Grotesk', sans-serif; font-size: .66rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); background: var(--accent); padding: 2px 7px; border-radius: 5px; vertical-align: 2px; }
+    .tools-strip { margin-top: 10px; padding: 26px 0 0; border-top: 1px solid var(--border); }
+    .tools-strip h3 { font-size: 1.1rem; margin-bottom: 14px; }
+    .tool-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .tool-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border-2); border-radius: 999px; padding: 8px 14px; font-size: .9rem; font-weight: 500; color: var(--text-soft); }
+    .tool-chip b { font-weight: 600; color: var(--text); }
+    .tool-chip.is-new { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(245,163,0,.14); }
+
+    /* ======================================================================
+       9. MÉDIA
+       ====================================================================== */
+    .media { position: relative; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 16 / 11; box-shadow: var(--shadow-md); border: 1px solid var(--border); background: var(--surface-2); }
+    .media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .media img.media-broken { display: none; }
+    .media-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; padding: 20px; background: radial-gradient(420px 220px at 30% 10%, rgba(245,163,0,.12), transparent 60%), repeating-linear-gradient(45deg, var(--surface-2) 0 14px, var(--surface) 14px 28px); color: var(--text-mut); }
+    .media-fallback svg { width: 44px; height: 44px; color: var(--accent-strong); opacity: .8; }
+    [data-theme="dark"] .media-fallback svg { color: var(--accent); }
+    .media-fallback span { font-size: .82rem; font-weight: 600; letter-spacing: .04em; }
+
+    /* ======================================================================
+       10. PROJETS / SAÉ
+       ====================================================================== */
+    .sem-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; margin: 46px 0 20px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+    .sem-head:first-of-type { margin-top: 6px; }
+    .sem-head h2 { font-size: clamp(1.25rem, 2.6vw, 1.6rem); display: flex; align-items: center; gap: 12px; }
+    .sem-num { display: inline-grid; place-items: center; min-width: 40px; height: 34px; padding: 0 10px; border-radius: 9px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--accent-ink); font-size: .95rem; font-weight: 700; }
+    .sem-head .sem-sub { color: var(--text-mut); font-size: .92rem; }
+    .sem-status { display: inline-flex; align-items: center; gap: 8px; font-size: .78rem; font-weight: 600; color: var(--accent-strong); background: rgba(245,163,0,.12); border: 1px solid rgba(245,163,0,.35); padding: 4px 11px; border-radius: 999px; }
+    [data-theme="dark"] .sem-status { color: var(--accent); }
+    .sae-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .sae-grid.three { grid-template-columns: repeat(3, 1fr); }
+    .sae-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; transition: transform var(--t-med), box-shadow var(--t-med), border-color var(--t-med); cursor: pointer; }
+    .sae-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--border-2); }
+    .sae-card:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    .sae-card.feature { grid-column: 1 / -1; }
+    .sae-card.feature .sae-body { padding: 26px 28px 28px; }
+    .sae-card.upcoming { border-style: dashed; border-width: 1.5px; border-color: var(--border-2); box-shadow: none; }
+    .sae-thumb { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: var(--surface-2); }
+    .sae-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+    .sae-thumb img.media-broken { display: none; }
+    .sae-card:hover .sae-thumb img:not(.media-broken) { transform: scale(1.06); }
+    .sae-thumb-fallback { position: absolute; inset: 0; display: grid; place-items: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 2.4rem; color: rgba(245,163,0,.55); background: repeating-linear-gradient(45deg, var(--surface-2) 0 14px, var(--surface) 14px 28px); }
+    .sae-thumb-upcoming { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--text-mut); background: radial-gradient(300px 160px at 50% 0%, rgba(245,163,0,.12), transparent 70%), repeating-linear-gradient(45deg, var(--surface-2) 0 12px, var(--surface) 12px 24px); }
+    .sae-thumb-upcoming svg { width: 38px; height: 38px; color: var(--accent-strong); opacity: .85; }
+    [data-theme="dark"] .sae-thumb-upcoming svg { color: var(--accent); }
+    .sae-thumb-upcoming span { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.6rem; color: var(--text-soft); }
+    .sae-badge { position: absolute; top: 12px; left: 12px; z-index: 2; background: var(--accent); color: var(--accent-ink); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .76rem; padding: 5px 11px; border-radius: 7px; box-shadow: var(--shadow-sm); letter-spacing: .02em; }
+    .sae-grade { position: absolute; top: 12px; right: 12px; z-index: 2; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .76rem; padding: 5px 10px; border-radius: 7px; box-shadow: var(--shadow-sm); background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--accent-ink); }
+    .sae-grade.pending { background: rgba(15,18,23,.72); color: #fff; border: 1px solid rgba(255,255,255,.28); backdrop-filter: blur(4px); font-weight: 600; }
+    .sae-body { padding: 22px 22px 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .sae-body h3 { font-size: 1.14rem; }
+    .sae-body p { color: var(--text-mut); font-size: .94rem; }
+    .sae-teaser { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .sae-card.feature .sae-teaser { -webkit-line-clamp: 4; line-clamp: 4; }
+    .sae-foot { margin-top: auto; padding-top: 8px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .sae-org { display: inline-flex; align-items: center; gap: 7px; font-size: .82rem; color: var(--text-soft); font-weight: 500; }
+    .sae-org svg { width: 16px; height: 16px; color: var(--accent-strong); flex: none; }
+    [data-theme="dark"] .sae-org svg { color: var(--accent); }
+    .sae-more { display: inline-flex; align-items: center; gap: 5px; font-size: .82rem; font-weight: 700; color: var(--accent-strong); white-space: nowrap; }
+    [data-theme="dark"] .sae-more { color: var(--accent); }
+    .sae-more svg { width: 16px; height: 16px; transition: transform var(--t-fast); }
+    .sae-card:hover .sae-more svg { transform: translateX(4px); }
+    .sae-hint { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: var(--text-mut); font-size: .92rem; }
+    .sae-hint svg { width: 18px; height: 18px; color: var(--accent-strong); flex: none; }
+    [data-theme="dark"] .sae-hint svg { color: var(--accent); }
+
+    /* Modale SAÉ */
+    body.modal-open { overflow: hidden; }
+    .sae-modal { position: fixed; inset: 0; z-index: 2000; display: none; align-items: flex-start; justify-content: center; padding: 24px; background: rgba(8,10,14,.64); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); overflow-y: auto; }
+    .sae-modal.open { display: flex; animation: fadeIn .25s var(--ease) both; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .sae-dialog { position: relative; width: 100%; max-width: 920px; background: var(--surface); border: 1px solid var(--border-2); border-radius: var(--r-xl); box-shadow: var(--shadow-lg); overflow: hidden; animation: dialogIn .3s var(--ease) both; }
+    @keyframes dialogIn { from { opacity: 0; transform: translateY(18px) scale(.985); } to { opacity: 1; transform: none; } }
+    .sae-close { position: absolute; top: 14px; right: 14px; z-index: 5; width: 40px; height: 40px; border-radius: 50%; border: 0; cursor: pointer; background: rgba(255,255,255,.16); color: #fff; display: grid; place-items: center; transition: background var(--t-fast), transform var(--t-fast); }
+    .sae-close:hover { background: rgba(255,255,255,.3); transform: rotate(90deg); }
+    .sae-close svg { width: 20px; height: 20px; }
+    .sae-dialog-head { position: relative; background: var(--banner-bg); color: #fff; padding: 30px 30px 26px; border-bottom: 4px solid var(--accent); overflow: hidden; }
+    .sae-dialog-head::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 30px 30px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 40%); mask-image: linear-gradient(90deg, transparent, #000 40%); }
+    .sae-head-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: start; }
+    .sae-head-left { min-width: 0; }
+    .sae-kicker { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .76rem; letter-spacing: .06em; color: var(--accent); background: rgba(245,163,0,.12); border: 1px solid rgba(245,163,0,.3); padding: 4px 11px; border-radius: 999px; }
+    .sae-dialog-head h2 { color: #fff; font-size: clamp(1.3rem, 3.4vw, 1.85rem); margin: 14px 0; }
+    .sae-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+    .sae-chip { display: inline-flex; align-items: center; gap: 8px; font-size: .84rem; color: rgba(255,255,255,.88); background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); padding: 7px 12px; border-radius: 8px; }
+    .sae-chip svg { width: 16px; height: 16px; color: var(--accent); flex: none; }
+    .sae-grade-badge { flex: none; min-width: 120px; text-align: center; border-radius: var(--r-md); padding: 14px 16px; margin-right: 46px; }
+    .sae-grade-badge.graded { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--accent-ink); box-shadow: 0 10px 26px rgba(245,163,0,.4); }
+    .sae-grade-badge.pending { background: rgba(255,255,255,.06); color: #fff; border: 1.5px dashed rgba(255,255,255,.45); }
+    .sae-grade-badge .g-label { display: block; font-size: .64rem; text-transform: uppercase; letter-spacing: .12em; font-weight: 700; opacity: .85; }
+    .sae-grade-badge .g-value { display: block; font-family: 'Space Grotesk', sans-serif; font-weight: 700; line-height: 1.1; margin-top: 4px; }
+    .sae-grade-badge.graded .g-value { font-size: 1.9rem; }
+    .sae-grade-badge.pending .g-value { font-size: 1.02rem; }
+    .g-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 7px; animation: pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(245,163,0,.55); } 50% { box-shadow: 0 0 0 6px rgba(245,163,0,0); } }
+    .sae-dialog-body { padding: 28px 30px 6px; }
+    .sae-dialog-body p { color: var(--text-soft); font-size: 1.02rem; line-height: 1.72; }
+    .sae-plan { margin-top: 18px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .sae-plan div { background: var(--surface-2); border: 1px dashed var(--border-2); border-radius: var(--r-md); padding: 14px 16px; }
+    .sae-plan b { display: block; font-family: 'Space Grotesk', sans-serif; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--accent-strong); margin-bottom: 4px; }
+    [data-theme="dark"] .sae-plan b { color: var(--accent); }
+    .sae-plan span { color: var(--text-mut); font-size: .92rem; }
+    .sae-dialog-pdf { padding: 22px 30px 30px; }
+    .sae-pdf-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .sae-pdf-head h3 { font-size: 1.06rem; display: inline-flex; align-items: center; gap: 9px; }
+    .sae-pdf-head h3 svg { width: 20px; height: 20px; color: var(--accent-strong); }
+    [data-theme="dark"] .sae-pdf-head h3 svg { color: var(--accent); }
+    .sae-pdf-head .btn svg { width: 17px; height: 17px; }
+    .sae-pdf-frame { border: 1px solid var(--border-2); border-radius: var(--r-md); overflow: hidden; background: var(--surface-2); }
+    .sae-pdf-frame iframe { width: 100%; height: 600px; border: 0; display: block; }
+    .sae-pdf-note { font-size: .84rem; color: var(--text-mut); margin-top: 10px; }
+    .sae-pdf-note code { background: var(--surface-2); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; font-size: .82em; }
+    .sae-pdf-empty { display: flex; align-items: center; gap: 14px; background: var(--surface-2); border: 1.5px dashed var(--border-2); border-radius: var(--r-md); padding: 22px; color: var(--text-mut); font-size: .95rem; }
+    .sae-pdf-empty svg { width: 30px; height: 30px; flex: none; color: var(--accent-strong); }
+    [data-theme="dark"] .sae-pdf-empty svg { color: var(--accent); }
+    @media (max-width: 620px) {
+      .sae-modal { padding: 0; }
+      .sae-dialog { border-radius: 0; min-height: 100%; max-width: none; }
+      .sae-head-grid { grid-template-columns: 1fr; }
+      .sae-grade-badge { justify-self: start; margin-right: 0; min-width: 0; padding: 12px 18px; }
+      .sae-dialog-head, .sae-dialog-body, .sae-dialog-pdf { padding-left: 20px; padding-right: 20px; }
+      .sae-close { background: rgba(0,0,0,.32); }
+      .sae-pdf-frame iframe { height: 70vh; }
+      .sae-plan { grid-template-columns: 1fr; }
+    }
+
+    /* ======================================================================
+       11. STAGE (nouveau en v2)
+       ====================================================================== */
+    .stage-status { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 34px 34px; box-shadow: var(--shadow-md); overflow: hidden; }
+    .stage-status::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(600px 240px at 0% -30%, rgba(245,163,0,.16), transparent 60%); }
+    .stage-status > * { position: relative; }
+    .stage-live { display: inline-flex; align-items: center; gap: 10px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-ink); background: linear-gradient(135deg, var(--accent), var(--accent-2)); padding: 7px 14px; border-radius: 999px; box-shadow: var(--shadow-sm); }
+    .stage-live .g-dot { background: var(--accent-ink); margin-right: 0; animation: pulseDark 1.6s ease-in-out infinite; }
+    @keyframes pulseDark { 0%,100% { box-shadow: 0 0 0 0 rgba(22,26,32,.45); } 50% { box-shadow: 0 0 0 6px rgba(22,26,32,0); } }
+    .stage-status h2 { font-size: clamp(1.5rem, 3.4vw, 2.2rem); margin: 16px 0 10px; }
+    .stage-status p { color: var(--text-soft); max-width: 640px; }
+    .stage-cta { display: flex; flex-direction: column; gap: 12px; }
+    .stage-facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 26px; }
+    .stage-fact { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 18px 18px; box-shadow: var(--shadow-sm); }
+    .stage-fact .label { display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--text-mut); font-weight: 600; margin-bottom: 6px; }
+    .stage-fact .value { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.08rem; color: var(--text); }
+    .stage-fact .value small { display: block; font-family: 'Inter', sans-serif; font-weight: 500; font-size: .82rem; color: var(--text-mut); margin-top: 2px; }
+    .stage-two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 46px; }
+    .stage-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 26px 26px; box-shadow: var(--shadow-sm); }
+    .stage-panel h3 { font-size: 1.2rem; margin-bottom: 14px; }
+    .timeline { position: relative; margin-top: 8px; }
+    .timeline::before { content: ""; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: var(--border-2); }
+    .tl-item { position: relative; padding: 0 0 22px 32px; }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-item::before { content: ""; position: absolute; left: 0; top: 5px; width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 3px solid var(--accent); }
+    .tl-item.done::before { background: var(--accent); }
+    .tl-item.next::before { border-style: dashed; border-color: var(--border-2); }
+    .tl-date { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .84rem; color: var(--accent-strong); letter-spacing: .02em; }
+    [data-theme="dark"] .tl-date { color: var(--accent); }
+    .tl-item h4 { font-size: 1.02rem; margin: 2px 0 4px; }
+    .tl-item p { color: var(--text-mut); font-size: .93rem; }
+
+    /* ======================================================================
+       12. ENGAGEMENTS
+       ====================================================================== */
+    .passion-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .passion-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; transition: transform var(--t-med), box-shadow var(--t-med), border-color var(--t-med); }
+    .passion-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--border-2); }
+    .passion-thumb { position: relative; aspect-ratio: 16 / 8; overflow: hidden; background: var(--surface-2); }
+    .passion-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+    .passion-thumb img.media-broken { display: none; }
+    .passion-card:hover .passion-thumb img:not(.media-broken) { transform: scale(1.05); }
+    .passion-body { padding: 24px 24px 26px; }
+    .passion-icon { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, rgba(245,163,0,.16), rgba(255,122,24,.12)); color: var(--accent-strong); margin-bottom: 14px; }
+    [data-theme="dark"] .passion-icon { color: var(--accent); }
+    .passion-icon svg { width: 24px; height: 24px; }
+    .passion-body h3 { font-size: 1.18rem; margin-bottom: 8px; }
+    .passion-body p { color: var(--text-mut); font-size: .95rem; }
+
+    /* ======================================================================
+       13. CV / CONTACT
+       ====================================================================== */
+    .cv-hero { text-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 46px 28px; box-shadow: var(--shadow-md); position: relative; overflow: hidden; }
+    .cv-hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(600px 240px at 50% -20%, rgba(245,163,0,.16), transparent 60%); }
+    .cv-hero h2 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); margin-bottom: 10px; }
+    .cv-hero p { color: var(--text-mut); max-width: 560px; margin: 0 auto 26px; }
+    .contact-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 40px; }
+    .contact-item { display: flex; align-items: center; gap: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 18px 20px; box-shadow: var(--shadow-sm); transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast); }
+    a.contact-item:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: var(--shadow-md); }
+    .contact-ic { width: 46px; height: 46px; flex: none; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, rgba(245,163,0,.16), rgba(255,122,24,.12)); color: var(--accent-strong); }
+    [data-theme="dark"] .contact-ic { color: var(--accent); }
+    .contact-ic svg { width: 22px; height: 22px; }
+    .contact-item .label { font-size: .76rem; text-transform: uppercase; letter-spacing: .08em; color: var(--text-mut); font-weight: 600; }
+    .contact-item .value { font-weight: 500; color: var(--text); word-break: break-word; }
+    .social-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+    .social-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border-2); padding: 12px 18px; border-radius: var(--r-sm); font-weight: 600; color: var(--text); transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast); }
+    .social-btn:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: var(--shadow-sm); }
+    .social-btn svg { width: 20px; height: 20px; }
+    .social-btn.linkedin svg { color: #0A66C2; }
+
+    /* ======================================================================
+       14. PIED DE PAGE
+       ====================================================================== */
+    .site-footer { background: var(--banner-bg); color: rgba(255,255,255,.72); padding: 40px 0 30px; margin-top: 80px; }
+    .footer-inner { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; }
+    .footer-inner .brand-name { color: #fff; }
+    .footer-nav { display: flex; flex-wrap: wrap; gap: 6px; }
+    .footer-nav button { background: none; border: 0; color: rgba(255,255,255,.7); cursor: pointer; font-family: 'Inter', sans-serif; font-size: .9rem; padding: 6px 10px; border-radius: 6px; transition: color var(--t-fast), background var(--t-fast); }
+    .footer-nav button:hover { color: #fff; background: rgba(255,255,255,.08); }
+    .footer-copy { width: 100%; border-top: 1px solid rgba(255,255,255,.12); margin-top: 22px; padding-top: 18px; font-size: .82rem; color: rgba(255,255,255,.5); }
+    .to-top { position: fixed; right: 22px; bottom: 22px; z-index: 900; width: 48px; height: 48px; border-radius: 50%; border: 0; cursor: pointer; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--accent-ink); box-shadow: var(--shadow-lg); display: grid; place-items: center; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all var(--t-med); }
+    .to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    .to-top:hover { transform: translateY(-3px); }
+    .to-top svg { width: 22px; height: 22px; }
+
+    /* ======================================================================
+       15. ANIMATIONS + RESPONSIVE
+       ====================================================================== */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease), transform .7s var(--ease); will-change: opacity, transform; }
+    .reveal.in { opacity: 1; transform: none; }
+    .stagger > * { transition-delay: calc(var(--i, 0) * 70ms); }
+    @media (max-width: 920px) {
+      .grid-3, .sae-grid.three { grid-template-columns: 1fr; }
+      .profile { grid-template-columns: 1fr; text-align: center; justify-items: center; gap: 26px; }
+      .skill-block { grid-template-columns: 1fr; gap: 24px; padding: 30px 0; }
+      .skill-block.reverse .skill-text { order: 0; }
+      .skill-block .media { order: -1; }
+      .stage-status { grid-template-columns: 1fr; }
+      .stage-cta { flex-direction: row; flex-wrap: wrap; }
+      .stage-facts { grid-template-columns: repeat(2, 1fr); }
+      .stage-two { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .section-pad { padding: 52px 0; }
+      .sae-grid, .passion-grid, .contact-grid { grid-template-columns: 1fr; }
+      .brand-sub { display: none; }
+    }
+    @media (max-width: 420px) {
+      .container { padding: 0 16px; }
+      .hero-cta { flex-direction: column; }
+      .hero-cta .btn { width: 100%; justify-content: center; }
+      .stage-facts { grid-template-columns: 1fr; }
+      .stage-status { padding: 26px 20px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Aller au contenu principal</a>
+
+  <!-- ===================== EN-TÊTE ===================== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <button class="brand" data-tab="accueil" aria-label="Livio Santin — retour à l'accueil">
+        <span class="brand-mark">LS</span>
+        <span>
+          <span class="brand-name">Livio <span>SANTIN</span></span>
+          <span class="brand-sub">Portfolio · BUT GMP</span>
+        </span>
+      </button>
+
+      <nav class="nav" id="nav" role="tablist" aria-label="Navigation principale">
+        <button class="nav-btn" role="tab" data-tab="accueil"     aria-selected="true"  aria-controls="accueil">Accueil</button>
+        <button class="nav-btn" role="tab" data-tab="competences" aria-selected="false" aria-controls="competences">Compétences techniques</button>
+        <button class="nav-btn" role="tab" data-tab="projets"     aria-selected="false" aria-controls="projets">Mes projets / SAÉ</button>
+        <button class="nav-btn" role="tab" data-tab="engagements" aria-selected="false" aria-controls="engagements">Engagements &amp; Passions</button>
+        <button class="nav-btn" role="tab" data-tab="contact"     aria-selected="false" aria-controls="contact">Mon CV / Contact</button>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Basculer le mode sombre" title="Mode clair / sombre">
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button class="icon-btn burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================ PAGE 1 — ACCUEIL ============================ -->
+    <section class="page active" id="accueil" role="tabpanel" tabindex="-1">
+      <div class="hero">
+        <div class="hero-fallback" aria-hidden="true"></div>
+        <img class="hero-img" src="../images/banniere_moteur.png" alt="" onerror="this.classList.add('media-broken')" />
+        <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
+        <div class="hero-content">
+          <span class="hero-badge"><span class="dot"></span>IUT de Troyes · URCA</span>
+          <h1>Portfolio <span class="accent">|</span> BUT GMP</h1>
+          <p class="hero-tag">Génie Mécanique &amp; Productique — Conception, production &amp; rigueur technique.</p>
+          <div class="hero-cta">
+            <button class="btn btn-primary" data-tab="projets">
+              Voir mes projets
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+            <button class="btn btn-ghost" data-tab="contact">Me contacter</button>
+          </div>
+        </div>
+        <div class="scroll-hint" aria-hidden="true">
+          <span>Découvrir</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="hazard" aria-hidden="true"></div>
+
+      <div class="section-pad">
+        <div class="container">
+          <div class="profile">
+            <div class="avatar reveal">
+              <div class="avatar-fallback" aria-hidden="true">LS</div>
+              <img src="../images/photo_profil.png" alt="Photo de profil de Livio Santin" onerror="this.classList.add('media-broken')" />
+            </div>
+            <div class="reveal">
+              <span class="eyebrow">À propos</span>
+              <h2>Étudiant en Génie Mécanique &amp; Productique<br>| IUT de Troyes</h2>
+              <p class="intro-text">
+                Actuellement en 2e année de BUT GMP, je me forme à la conception mécanique et à la
+                production industrielle. Au-delà des cours, je cultive la rigueur et la précision à travers
+                mon engagement de Réserviste dans l'Armée de l'Air et de l'Espace et ma formation de pilote
+                privé (PPL). Passionné de technique, j'aime comprendre comment les choses fonctionnent, que
+                ce soit un moteur ou une procédure aéronautique. Passionné de mécanique automobile,
+                j'assure l'entretien technique de mon véhicule (C6 V6 3.0L), ce qui renforce mon approche
+                concrète des différents systèmes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-pad" style="padding-top:0;">
+        <div class="container">
+          <div class="reveal" style="margin-bottom:34px;">
+            <span class="eyebrow">Mes valeurs</span>
+            <h2 class="section-title">Ce qui guide ma démarche d'ingénieur</h2>
+          </div>
+          <div class="grid-3 stagger">
+            <article class="value-card reveal" style="--i:0">
+              <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+              <h3>Rigueur</h3>
+              <p>Issu de mon parcours de réserviste opérationnel et de ma pratique du tir sportif, le respect absolu des consignes, de la sécurité et des procédures est pour moi une seconde nature. J'applique cette même exigence de précision dans mes livrables techniques et mes analyses en ingénierie.</p>
+            </article>
+            <article class="value-card reveal" style="--i:1">
+              <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+              <h3>Technicité</h3>
+              <p>Passionné par le fonctionnement des systèmes complexes, du moteur aux mécanismes d'armement, le BUT GMP me permet de transformer cette curiosité en compétences d'ingénierie : conception CAO, dimensionnement mécanique et optimisation des procédés de fabrication.</p>
+            </article>
+            <article class="value-card reveal" style="--i:2">
+              <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 22l10-10M16 8l4-4M9.5 14.5l5-5M22 2l-7 2-3 3-5 5-3 3 5 5 3-3 5-5 3-3 2-7z"/></svg></div>
+              <h3>Autonomie</h3>
+              <p>Mes 35 heures de vol, dont mes premières navigations en solo pour le PPL, ont forgé ma capacité à prendre des décisions rapides, à gérer le stress et à assumer mes responsabilités. En mode projet ou en autonomie en atelier, je sais avancer seul vers l'objectif fixé.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PAGE 2 — COMPÉTENCES TECHNIQUES ===================== -->
+    <section class="page" id="competences" role="tabpanel" tabindex="-1">
+      <div class="page-banner">
+        <div class="container">
+          <span class="eyebrow">Savoir-faire</span>
+          <h1>Compétences techniques</h1>
+          <p>Trois grands domaines de compétences couverts par la formation BUT GMP, du bureau d'études à l'atelier de production.</p>
+        </div>
+      </div>
+
+      <div class="section-pad">
+        <div class="container">
+
+          <div class="skill-block">
+            <div class="skill-text reveal">
+              <span class="skill-num">01 — Bureau d'Études</span>
+              <h3>Spécifier et Concevoir</h3>
+              <ul class="skill-list">
+                <li>Modélisation 3D et mise en plan sur CATIA V5</li>
+                <li>Dimensionnement mécanique et calculs de RDM (Résistance des Matériaux)</li>
+                <li>Choix de composants mécaniques (roulements, guidages, moteurs)</li>
+                <li>Analyse fonctionnelle (bête à cornes, diagramme FAST, cahier des charges)</li>
+              </ul>
+            </div>
+            <figure class="media reveal">
+              <div class="media-fallback" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/><path d="M13 13l5 5"/></svg>
+                <span>CAO · CATIA V5</span>
+              </div>
+              <img src="../images/cao_solidworks.png" alt="Modélisation CAO sous CATIA V5" loading="lazy" onerror="this.classList.add('media-broken')" />
+            </figure>
+          </div>
+
+          <div class="skill-block reverse">
+            <div class="skill-text reveal">
+              <span class="skill-num">02 — Atelier / Production</span>
+              <h3>Réaliser et Produire</h3>
+              <ul class="skill-list">
+                <li>Lecture et interprétation de plans techniques (tolérances géométriques et dimensionnelles GPS)</li>
+                <li>Conception de processus de fabrication (gamme d'usinage, choix des outils)</li>
+                <li>Programmation de machines-outils à commande numérique (FAO)</li>
+                <li>Métrologie et contrôle qualité des pièces produites</li>
+              </ul>
+            </div>
+            <figure class="media reveal">
+              <div class="media-fallback" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+                <span>Usinage · Fraisage</span>
+              </div>
+              <img src="../images/usinage_fraisage.png" alt="Pièce usinée modélisée" loading="lazy" onerror="this.classList.add('media-broken')" />
+            </figure>
+          </div>
+
+          <div class="skill-block">
+            <div class="skill-text reveal">
+              <span class="skill-num">03 — Logistique / Maintenance</span>
+              <h3>Manager et Organiser</h3>
+              <ul class="skill-list">
+                <li>Implantation d'un poste de travail ou d'une ligne de production</li>
+                <li>Gestion de projet en équipe (répartition des tâches, respect des jalons)</li>
+                <li>Planification et suivi de production / Maintenance des systèmes mécaniques</li>
+              </ul>
+            </div>
+            <figure class="media reveal">
+              <div class="media-fallback" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
+                <span>Implantation · Gantt</span>
+              </div>
+              <img src="../images/implantation_gantt.png" alt="Préhenseur de la cellule robotisée" loading="lazy" onerror="this.classList.add('media-broken')" />
+            </figure>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= PAGE 3 — MES PROJETS / SAÉ ======================= -->
+    <section class="page" id="projets" role="tabpanel" tabindex="-1">
+      <div class="page-banner">
+        <div class="container">
+          <span class="eyebrow">Réalisations</span>
+          <h1>Mes projets / SAÉ</h1>
+          <p>Les SAÉ (Situations d'Apprentissage et d'Évaluation) sont des projets concrets qui me permettent de mettre en pratique les connaissances théoriques vues en cours pour résoudre des problématiques professionnelles réelles.</p>
+        </div>
+      </div>
+
+      <div class="section-pad">
+        <div class="container">
+          <p class="sae-hint reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11.5V5.5a2 2 0 0 1 4 0V10"/><path d="M13 10.5a2 2 0 0 1 4 0V13a6 6 0 0 1-6 6h-1a5 5 0 0 1-3.9-1.9l-2.2-2.8a1.8 1.8 0 0 1 2.7-2.3l1.4 1.3"/></svg>
+            Cliquez sur une carte pour ouvrir son détail complet&nbsp;: note obtenue, contexte, organisation et rapport PDF.
+          </p>
+          <!-- Généré en JS depuis SAE_DATA, regroupé par semestre (du plus récent au plus ancien) -->
+          <div id="saeSemesters"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PAGE 5 — ENGAGEMENTS & PASSIONS ===================== -->
+    <section class="page" id="engagements" role="tabpanel" tabindex="-1">
+      <div class="page-banner">
+        <div class="container">
+          <span class="eyebrow">En dehors des cours</span>
+          <h1>Engagements &amp; Passions</h1>
+          <p>Des engagements exigeants qui forgent ma discipline, mon sang-froid et mon goût pour la technique.</p>
+        </div>
+      </div>
+
+      <div class="section-pad">
+        <div class="container">
+          <div class="passion-grid stagger">
+            <article class="passion-card reveal" style="--i:0">
+              <div class="passion-body">
+                <div class="passion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/></svg></div>
+                <h3>Tir Sportif &amp; Systèmes d'Armes</h3>
+                <p>Passionné par l'ingénierie des systèmes d'armement et tireur sportif assidu, je possède une détention d'arme à titre sportif depuis mes 18 ans. Cette pratique exige une rigueur absolue et un respect strict des protocoles de sécurité, des valeurs que j'applique quotidiennement dans mes projets en Génie Mécanique. Au-delà de l'aspect sportif, je m'intéresse particulièrement au fonctionnement technique et à la conception des mécanismes.</p>
+              </div>
+            </article>
+            <article class="passion-card reveal" style="--i:1">
+              <div class="passion-thumb"><img src="../images/reserve_militaire.png" alt="Réserve opérationnelle — Armée de l'Air et de l'Espace" loading="lazy" onerror="this.classList.add('media-broken')" /></div>
+              <div class="passion-body">
+                <div class="passion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5l8-3z"/></svg></div>
+                <h3>Réserve Opérationnelle (AAE)</h3>
+                <p>Engagé en tant que réserviste opérationnel au sein de l'Armée de l'Air et de l'Espace depuis 2024, je sers en unité au sein d'un Escadron de Protection (EP). En tant que Fusilier Commando de l'air, j'évolue dans un environnement exigeant où la discipline et l'esprit d'équipe sont primordiaux. Ma participation régulière à des séances de tir opérationnel et aux missions de protection de base aérienne renforce ma capacité de concentration.</p>
+              </div>
+            </article>
+            <article class="passion-card reveal" style="--i:0">
+              <div class="passion-thumb"><img src="../images/ppl_aviation.png" alt="Formation de pilote privé (PPL)" loading="lazy" onerror="this.classList.add('media-broken')" /></div>
+              <div class="passion-body">
+                <div class="passion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5a2.12 2.12 0 0 0-3-3L13 8 4.8 6.2a.5.5 0 0 0-.5.8l3.9 4.5-2.3 2.3-2-.4-1 1 3 2 2 3 1-1-.4-2 2.3-2.3 4.5 3.9a.5.5 0 0 0 .8-.5z"/></svg></div>
+                <h3>Formation Pilote Privé (PPL)</h3>
+                <p>Passionné par l'aéronautique, je poursuis actuellement ma formation de pilote privé (PPL). Avec 35 heures de vol à mon actif sur monomoteur, dont plusieurs heures en solo, j'ai développé une grande rigueur dans l'application des procédures et une gestion du stress éprouvée. Cette expérience me permet d'appréhender concrètement les notions de mécanique du vol.</p>
+              </div>
+            </article>
+            <article class="passion-card reveal" style="--i:1">
+              <div class="passion-thumb"><img src="../images/airsoft_asso.png" alt="Association Airsoft 3" loading="lazy" onerror="this.classList.add('media-broken')" /></div>
+              <div class="passion-body">
+                <div class="passion-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/></svg></div>
+                <h3>Entrepreneuriat &amp; Gestion de Projet</h3>
+                <p>Fondateur d'une association basée à Troyes, je pilote ce projet avec l'objectif de développer des compétences concrètes en gestion administrative, en communication et en événementiel. C'est l'opportunité d'allier ma passion pour les répliques et la tactique à une expérience de gestion de projet d'équipe.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= PAGE 6 — MON CV / CONTACT ========================= -->
+    <section class="page" id="contact" role="tabpanel" tabindex="-1">
+      <div class="page-banner">
+        <div class="container">
+          <span class="eyebrow">Restons en contact</span>
+          <h1>Mon CV / Contact</h1>
+          <p>Téléchargez mon CV complet ou contactez-moi directement.</p>
+        </div>
+      </div>
+
+      <div class="section-pad">
+        <div class="container">
+          <div class="cv-hero reveal">
+            <span class="eyebrow" style="justify-content:center;">Curriculum Vitæ</span>
+            <h2>Mon parcours en un document</h2>
+            <p>Formation, compétences techniques et expériences réunies dans un CV prêt à imprimer.</p>
+            <a class="btn btn-primary" href="../documents/cv_livio_santin.pdf" download>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+              Télécharger mon CV complet (PDF)
+            </a>
+          </div>
+
+          <div class="reveal" style="margin-top:48px;">
+            <span class="eyebrow">Coordonnées professionnelles</span>
+            <h2 class="section-title">Me joindre</h2>
+          </div>
+
+          <div class="contact-grid stagger">
+            <a class="contact-item reveal" style="--i:0" href="mailto:livio.santin@icloud.com">
+              <span class="contact-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
+              <span><span class="label">Email personnel</span><br><span class="value">livio.santin@icloud.com</span></span>
+            </a>
+            <a class="contact-item reveal" style="--i:1" href="mailto:livio.santin@etudiant.univ-reims.fr">
+              <span class="contact-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
+              <span><span class="label">Email universitaire</span><br><span class="value">livio.santin@etudiant.univ-reims.fr</span></span>
+            </a>
+            <div class="contact-item reveal" style="--i:1">
+              <span class="contact-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+              <span><span class="label">Situation</span><br><span class="value">IUT de Troyes — URCA</span></span>
+            </div>
+          </div>
+
+          <div class="social-row reveal">
+            <a class="social-btn linkedin" href="https://www.linkedin.com/in/livio-santin-6167b7416" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 18.34V9.6H5.67v8.74h2.67zM7 8.42a1.55 1.55 0 1 0 0-3.1 1.55 1.55 0 0 0 0 3.1zm11.34 9.92v-4.8c0-2.56-1.37-3.75-3.2-3.75a2.76 2.76 0 0 0-2.5 1.38V9.6H9.97v8.74h2.67v-4.62c0-1.22.23-2.4 1.74-2.4 1.49 0 1.5 1.39 1.5 2.48v4.54h2.46z"/></svg>
+              Profil LinkedIn
+            </a>
+            <a class="social-btn" href="mailto:livio.santin@icloud.com">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+              Écrire un email
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== PIED DE PAGE ===================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="brand-mark">LS</span>
+          <span class="brand-name">Livio <span style="color:rgba(255,255,255,.55)">SANTIN</span></span>
+        </div>
+        <nav class="footer-nav" aria-label="Navigation pied de page">
+          <button data-tab="accueil">Accueil</button>
+          <button data-tab="competences">Compétences</button>
+          <button data-tab="projets">Projets / SAÉ</button>
+          <button data-tab="engagements">Engagements</button>
+          <button data-tab="contact">Contact</button>
+        </nav>
+      </div>
+      <div class="footer-copy">
+        © <span id="year"></span> Livio Santin · BUT Génie Mécanique et Productique — IUT de Troyes (URCA). Portfolio réalisé en HTML / CSS / JavaScript. Version archivée — <a href="../" style="color:#FFB020;text-decoration:underline">voir la version actuelle</a>.
+      </div>
+    </div>
+  </footer>
+
+  <button class="to-top" id="toTop" aria-label="Revenir en haut de la page">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script>
+  (function () {
+    'use strict';
+
+    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+    function $all(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+
+    /* =====================================================================
+       A. DONNÉES DES SAÉ — source unique pour les cartes et la modale
+       Pour compléter une SAÉ du S3 : remplir title, contexte, org, desc,
+       puis passer status à "done" avec graded:true, note, img et pdf.
+       ===================================================================== */
+    var SEMESTERS = [
+      { id: "S2", label: "Semestre 2", sub: "BUT 1 · 2025–2026" },
+      { id: "S1", label: "Semestre 1", sub: "BUT 1 · 2025–2026" }
+    ];
+
+    var SAE_DATA = [
+
+      /* ---------- Semestre 1 ---------- */
+      { id: "1.1", sem: "S1", img: "../images/sae11.png", pdf: "../documents/sae11.pdf",
+        title: "Analyse d'un produit grand public",
+        contexte: "Semestre 1 · Analyse concurrentielle (outil électroportatif)",
+        org: "Projet individuel", solo: true, graded: true, note: "14,5/20",
+        desc: "Situation : Salarié au sein d'une entreprise produisant des appareils électroportatifs, j'ai réalisé une analyse concurrentielle approfondie à travers la description technique et fonctionnelle d'un produit concurrent. J'ai procédé au démontage complet d'un outil multifonction afin d'examiner ses composants, détailler son schéma électrique et comprendre précisément à quel besoin et quel usage le produit répond." },
+      { id: "1.2", sem: "S1", img: "../images/sae12.png", pdf: "../documents/sae12.pdf",
+        title: "Dessin technique & Modélisation (Borne de recharge)",
+        contexte: "Semestre 1 · Conception collective — borne de recharge",
+        org: "En groupe (binôme imposé)", solo: false, graded: true, note: "12,5/20",
+        desc: "Dans le cadre de la conception collective d'une borne de recharge électrique, notre groupe s'est vu attribuer une tâche spécifique. Mon rôle a été de concevoir intégralement la casquette de la borne. Celle-ci devait impérativement répondre à des critères stricts d'étanchéité, d'ergonomie et d'interchangeabilité (facilité de montage/démontage)." },
+      { id: "1.3", sem: "S1", img: "../images/sae13.png", pdf: "../documents/sae13.pdf",
+        title: "De la maquette au prototypage physique",
+        contexte: "Semestre 1 · Suremballeuse — réglage automatisé (CATIA)",
+        org: "Projet individuel", solo: true, graded: true, note: "15,5/20",
+        desc: "Objectif : Concevoir l'adaptation du système de réglage des formats sur une suremballeuse industrielle afin de proposer une option de réglage automatisé au client. J'ai modélisé et assemblé l'intégralité du système sur CATIA, incluant la conception de deux brides de fixation spécifiques et l'interface complète entre le moteur et le réducteur." },
+      { id: "1.4", sem: "S1", img: "../images/sae14.png", pdf: "../documents/sae14.pdf",
+        title: "Organisation structurelle de l'industrie (Cas Claroplast)",
+        contexte: "Semestre 1 · Étude d'entreprise — Claroplast SAS (Troyes)",
+        org: "En binôme", solo: false, graded: true, note: "19,5/20",
+        desc: "Recherche, prise de contact et interview du PDG de l'entreprise CLAROPLAST SAS (située dans la ZI aux Écrevolles à Troyes). L'objectif était d'analyser la structure de l'entreprise, son parc de machines, ses ressources humaines, ainsi que le parcours professionnel du dirigeant issu d'une formation GMP. Livrables réalisés : un poster de synthèse (affiche technique) et un support PowerPoint pour la soutenance orale." },
+
+      /* ---------- Semestre 2 ---------- */
+      { id: "2.2", sem: "S2", img: "../images/sae22.png", pdf: "../documents/sae22.pdf",
+        title: "Implantation d'une cellule robotisée",
+        contexte: "Semestre 2 · Ligne automatisée — Claroplast (HandlingPRO)",
+        org: "Groupe de 4 étudiants", solo: false, graded: true, note: "14/20",
+        desc: "Étude d'implantation et d'optimisation d'une ligne de production et de conditionnement automatisée de tartelettes pour l'entreprise Claroplast. Utilisation du logiciel HandlingPRO pour la modélisation de la cellule, la gestion des flux de production et la simulation des trajectoires du bras robotisé." },
+      { id: "2.3", sem: "S2", img: "../images/sae23.png", pdf: "../documents/sae23.pdf",
+        title: "Fabrication d'une pièce unitaire",
+        contexte: "Semestre 2 · Usinage CN — simulation VERICUT",
+        org: "Groupe de 3 étudiants", solo: false, graded: true, note: "13/20",
+        desc: "Génération des gammes de fabrication complexes et choix des outils d'usinage. Au sein de l'équipe, j'ai été principalement chargé de la sécurisation des trajectoires et de la simulation de code CN sur le logiciel VERICUT, ainsi que du réglage et du pilotage de la machine-outil à commande numérique en atelier." },
+      { id: "2.4", sem: "S2", img: "../images/sae24.png", pdf: "../documents/sae24.pdf",
+        title: "Pilotage de production & Chiffrage",
+        contexte: "Semestre 2 · Chargé d'affaires / Méthodes — devis industriel",
+        org: "En binôme", solo: false, graded: true, note: "16/20",
+        desc: "Posté en tant que chargé d'affaires / méthode pour établir un devis industriel (gamme, coûts, délais) pour la fabrication de pièces mécaniques. Analyse des contraintes de sous-traitance (Usinage à 60€/h, Mécanosoudure à 25€/ml, Traitements thermiques et de surface avec minimums de commande, logistique et transport à 250€/T avec application d'une marge de 20%). Livrables : Gamme prévisionnelle détaillée, Tableau d'estimation des coûts/délais et planning de Gantt prévisionnel." },
+      { id: "2.5", sem: "S2", img: "../images/sae25.png", pdf: "../documents/sae25.pdf", feature: true,
+        title: "Conception et dimensionnement d'une pièce de sécurité",
+        contexte: "Semestre 2 · Essieu de remorquage d'avions — RDM (CATIA)",
+        org: "Groupe de 3 étudiants", solo: false, graded: true, note: "16/20",
+        desc: "Modélisation complète d'un essieu et d'une barre de traction destinés au remorquage au sol de moteurs d'avions. À l'aide de calculs de mécanique générale et de Résistance des Matériaux (RDM/DDS), nous avons déterminé les efforts de traction requis afin de concevoir une structure hautement résistante. Je me suis principalement occupé de la partie conception CAO sur CATIA et de la rédaction finale du compte rendu technique." }
+    ];
+
+    var IC = {
+      solo:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+      group: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+      ctx:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>',
+      pdf:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>',
+      close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>',
+      ext:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>',
+      arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+      clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'
+    };
+
+    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function saeById(id) { for (var i = 0; i < SAE_DATA.length; i++) { if (SAE_DATA[i].id === id) return SAE_DATA[i]; } return null; }
+
+    /* =====================================================================
+       B. ONGLETS
+       ===================================================================== */
+    var pages = $all('.page');
+    var navBtns = $all('.nav-btn');
+    var nav = $('#nav');
+    var burger = $('#burger');
+
+    function setActivePage(id, focus) {
+      var target = document.getElementById(id);
+      if (!target || !target.classList.contains('page')) { id = 'accueil'; target = document.getElementById('accueil'); }
+      pages.forEach(function (p) { p.classList.toggle('active', p === target); });
+      navBtns.forEach(function (b) { b.setAttribute('aria-selected', b.dataset.tab === id ? 'true' : 'false'); });
+      revealInActivePage(target);
+      window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
+      if (('#' + id) !== location.hash) { history.pushState({ tab: id }, '', '#' + id); }
+      closeMenu();
+      if (focus) { target.focus({ preventScroll: true }); }
+      toggleParticles(id === 'accueil');
+    }
+
+    document.addEventListener('click', function (e) {
+      var trigger = e.target.closest('[data-tab]');
+      if (!trigger) return;
+      e.preventDefault();
+      setActivePage(trigger.dataset.tab, true);
+    });
+
+    nav.addEventListener('keydown', function (e) {
+      var idx = navBtns.indexOf(document.activeElement);
+      if (idx === -1) return;
+      var next = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (idx + 1) % navBtns.length;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (idx - 1 + navBtns.length) % navBtns.length;
+      else if (e.key === 'Home') next = 0;
+      else if (e.key === 'End') next = navBtns.length - 1;
+      if (next !== null) { e.preventDefault(); navBtns[next].focus(); }
+    });
+
+    window.addEventListener('popstate', function () {
+      var m = document.getElementById('saeModal');
+      if (m && m.classList.contains('open')) { closeSaeModal(); return; }
+      setActivePage((location.hash || '#accueil').slice(1), false);
+    });
+
+    function openMenu() { nav.classList.add('open'); burger.setAttribute('aria-expanded', 'true'); }
+    function closeMenu() { nav.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }
+    burger.addEventListener('click', function () { nav.classList.contains('open') ? closeMenu() : openMenu(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
+
+    /* =====================================================================
+       C. THÈME
+       ===================================================================== */
+    $('#themeToggle').addEventListener('click', function () {
+      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('livio-theme', next); } catch (e) {}
+      var meta = $('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', next === 'dark' ? '#0e1116' : '#ffffff');
+    });
+
+    /* =====================================================================
+       D. ANIMATIONS AU DÉFILEMENT
+       ===================================================================== */
+    var io = null;
+    if ('IntersectionObserver' in window && !prefersReduced) {
+      io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }
+    function revealInActivePage(page) {
+      var items = $all('.reveal', page);
+      if (!io) { items.forEach(function (el) { el.classList.add('in'); }); return; }
+      items.forEach(function (el) { if (!el.classList.contains('in')) io.observe(el); });
+    }
+
+    /* =====================================================================
+       E. PROJETS / SAÉ — rendu par semestre + modale
+       ===================================================================== */
+    function cardHtml(s, i) {
+      var thumb;
+      if (s.upcoming) {
+        thumb = '<div class="sae-thumb-upcoming" aria-hidden="true">' + IC.clock + '<span>' + s.id + '</span></div>';
+      } else {
+        thumb = '<div class="sae-thumb-fallback" aria-hidden="true">' + s.id + '</div>' +
+                '<img src="' + s.img + '" alt="' + esc(s.title) + '" loading="lazy" onerror="this.classList.add(\'media-broken\')" />';
+      }
+      return '<article class="sae-card reveal' + (s.feature ? ' feature' : '') + (s.upcoming ? ' upcoming' : '') + '" style="--i:' + i + '" ' +
+          'data-sae="' + s.id + '" role="button" tabindex="0" ' +
+          'aria-label="Ouvrir le détail de la SAÉ ' + s.id + ' : ' + esc(s.title) + '">' +
+          '<div class="sae-thumb">' +
+            '<span class="sae-badge">SAÉ ' + s.id + (s.feature ? ' · Projet phare' : '') + '</span>' +
+            '<span class="sae-grade' + (s.graded ? '' : ' pending') + '">' + esc(s.note) + '</span>' +
+            thumb +
+          '</div>' +
+          '<div class="sae-body">' +
+            '<h3>' + esc(s.title) + '</h3>' +
+            '<p class="sae-teaser">' + esc(s.desc) + '</p>' +
+            '<div class="sae-foot">' +
+              '<span class="sae-org">' + (s.solo ? IC.solo : IC.group) + esc(s.org) + '</span>' +
+              '<span class="sae-more">Voir le détail' + IC.arrow + '</span>' +
+            '</div>' +
+          '</div>' +
+        '</article>';
+    }
+
+    var semWrap = $('#saeSemesters');
+    if (semWrap) {
+      var html = '';
+      SEMESTERS.forEach(function (sem) {
+        var list = SAE_DATA.filter(function (s) { return s.sem === sem.id; });
+        if (!list.length) return;
+        var feat = list.filter(function (s) { return s.feature; });
+        var rest = list.filter(function (s) { return !s.feature; });
+        html += '<div class="sem-head reveal">' +
+                  '<h2><span class="sem-num">' + sem.id + '</span>' + esc(sem.label) + '</h2>' +
+                  (sem.status ? '<span class="sem-status"><span class="g-dot" aria-hidden="true"></span>' + esc(sem.status) + '</span>'
+                              : '<span class="sem-sub">' + esc(sem.sub) + '</span>') +
+                '</div>';
+        if (feat.length) {
+          html += '<div class="sae-grid stagger" style="margin-bottom:24px">';
+          feat.forEach(function (s, i) { html += cardHtml(s, i); });
+          html += '</div>';
+        }
+        html += '<div class="sae-grid stagger' + (rest.length === 3 ? ' three' : '') + '">';
+        rest.forEach(function (s, i) { html += cardHtml(s, i); });
+        html += '</div>';
+      });
+      semWrap.innerHTML = html;
+    }
+
+    var saeModal = document.createElement('div');
+    saeModal.className = 'sae-modal';
+    saeModal.id = 'saeModal';
+    saeModal.setAttribute('role', 'dialog');
+    saeModal.setAttribute('aria-modal', 'true');
+    saeModal.setAttribute('aria-labelledby', 'saeModalTitle');
+    saeModal.innerHTML =
+      '<div class="sae-dialog" role="document">' +
+        '<button class="sae-close" type="button" id="saeClose" aria-label="Fermer le détail">' + IC.close + '</button>' +
+        '<div class="sae-dialog-head">' +
+          '<div class="sae-head-grid">' +
+            '<div class="sae-head-left">' +
+              '<span class="sae-kicker" id="saeKicker">SAÉ</span>' +
+              '<h2 id="saeModalTitle"></h2>' +
+              '<div class="sae-meta"><span class="sae-chip" id="saeCtx"></span><span class="sae-chip" id="saeOrg"></span></div>' +
+            '</div>' +
+            '<div class="sae-grade-badge" id="saeGrade"></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="sae-dialog-body">' +
+          '<span class="eyebrow">Objectifs &amp; travail réalisé</span>' +
+          '<p id="saeDesc"></p>' +
+          '<div class="sae-plan" id="saePlan" hidden>' +
+            '<div><b>Contexte</b><span>À compléter au lancement de la SAÉ</span></div>' +
+            '<div><b>Mon rôle</b><span>À compléter pendant le projet</span></div>' +
+            '<div><b>Outils</b><span>À compléter</span></div>' +
+            '<div><b>Résultat</b><span>Note et livrables à la fin de la SAÉ</span></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="sae-dialog-pdf">' +
+          '<div class="sae-pdf-head">' +
+            '<h3>' + IC.pdf + 'Compte rendu (PDF)</h3>' +
+            '<a class="btn btn-outline" id="saePdfLink" href="#" target="_blank" rel="noopener">Ouvrir dans un onglet' + IC.ext + '</a>' +
+          '</div>' +
+          '<div class="sae-pdf-frame" id="saePdfFrame"><iframe id="saeFrame" title="Compte rendu PDF de la SAÉ" src="about:blank" loading="lazy"></iframe></div>' +
+          '<p class="sae-pdf-note" id="saePdfNote">Si le PDF ne s\'affiche pas, c\'est qu\'il n\'a pas encore été déposé dans le dossier <code>documents/</code> — il apparaîtra automatiquement une fois ajouté.</p>' +
+          '<div class="sae-pdf-empty" id="saePdfEmpty" hidden>' + IC.clock + '<span>Le compte rendu sera disponible à la fin de la SAÉ.</span></div>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(saeModal);
+
+    var saeOpener = null;
+
+    function openSaeModal(id, card) {
+      var s = saeById(id);
+      if (!s) return;
+      saeOpener = card || null;
+
+      $('#saeKicker').textContent = 'SAÉ ' + s.id + (s.feature ? ' · Projet phare' : '');
+      $('#saeModalTitle').textContent = s.title;
+      $('#saeCtx').innerHTML = IC.ctx + '<span>' + esc(s.contexte) + '</span>';
+      $('#saeOrg').innerHTML = (s.solo ? IC.solo : IC.group) + '<span>' + esc(s.org) + '</span>';
+      $('#saeDesc').textContent = s.desc;
+      $('#saePlan').hidden = !s.upcoming;
+
+      var grade = $('#saeGrade');
+      if (s.graded) {
+        grade.className = 'sae-grade-badge graded';
+        grade.innerHTML = '<span class="g-label">Note obtenue</span><span class="g-value">' + esc(s.note) + '</span>';
+      } else {
+        grade.className = 'sae-grade-badge pending';
+        grade.innerHTML = '<span class="g-label">Statut</span><span class="g-value"><span class="g-dot"></span>' + esc(s.note) + '</span>';
+      }
+
+      var hasPdf = !!s.pdf;
+      $('#saePdfFrame').hidden = !hasPdf;
+      $('#saePdfNote').hidden = !hasPdf;
+      $('#saePdfLink').hidden = !hasPdf;
+      $('#saePdfEmpty').hidden = hasPdf;
+      if (hasPdf) { $('#saeFrame').src = s.pdf; $('#saePdfLink').href = s.pdf; }
+
+      saeModal.classList.add('open');
+      document.body.classList.add('modal-open');
+      history.pushState({ saeModal: s.id }, '', location.hash || '#projets');
+      $('#saeClose').focus();
+    }
+
+    function closeSaeModal() {
+      if (!saeModal.classList.contains('open')) return;
+      saeModal.classList.remove('open');
+      document.body.classList.remove('modal-open');
+      $('#saeFrame').src = 'about:blank';
+      if (saeOpener && typeof saeOpener.focus === 'function') saeOpener.focus();
+      saeOpener = null;
+    }
+    function requestCloseSae() {
+      if (history.state && history.state.saeModal) history.back();
+      else closeSaeModal();
+    }
+
+    if (semWrap) {
+      semWrap.addEventListener('click', function (e) {
+        var card = e.target.closest('[data-sae]');
+        if (card) openSaeModal(card.getAttribute('data-sae'), card);
+      });
+      semWrap.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+        var card = e.target.closest('[data-sae]');
+        if (card) { e.preventDefault(); openSaeModal(card.getAttribute('data-sae'), card); }
+      });
+    }
+
+    $('#saeClose').addEventListener('click', requestCloseSae);
+    saeModal.addEventListener('click', function (e) { if (e.target === saeModal) requestCloseSae(); });
+    saeModal.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); requestCloseSae(); return; }
+      if (e.key !== 'Tab') return;
+      var f = saeModal.querySelectorAll('button, a[href], iframe, [tabindex]:not([tabindex="-1"])');
+      var list = [];
+      for (var k = 0; k < f.length; k++) { if (f[k].offsetParent !== null || f[k] === document.activeElement) list.push(f[k]); }
+      if (!list.length) return;
+      var first = list[0], last = list[list.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+
+    /* =====================================================================
+       F. RETOUR EN HAUT
+       ===================================================================== */
+    var toTop = $('#toTop');
+    window.addEventListener('scroll', function () { toTop.classList.toggle('show', window.scrollY > 480); }, { passive: true });
+    toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' }); });
+
+    /* =====================================================================
+       G. PARTICULES DU HÉRO
+       ===================================================================== */
+    var canvas = $('#heroCanvas');
+    var ctx = canvas ? canvas.getContext('2d') : null;
+    var particles = [], raf = null, running = false, W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
+    function resizeCanvas() {
+      if (!canvas) return;
+      var rect = canvas.parentElement.getBoundingClientRect();
+      W = rect.width; H = rect.height;
+      canvas.width = W * DPR; canvas.height = H * DPR;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    function initParticles() {
+      if (!canvas) return;
+      resizeCanvas();
+      var count = Math.min(64, Math.floor(W / 22));
+      particles = [];
+      for (var i = 0; i < count; i++) {
+        particles.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4, r: Math.random() * 1.6 + 0.6 });
+      }
+    }
+    function draw() {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(245,163,0,0.55)'; ctx.fill();
+        for (var j = i + 1; j < particles.length; j++) {
+          var q = particles[j], dx = p.x - q.x, dy = p.y - q.y, d = dx * dx + dy * dy;
+          if (d < 13000) {
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
+            ctx.strokeStyle = 'rgba(245,163,0,' + (0.14 * (1 - d / 13000)) + ')';
+            ctx.lineWidth = 1; ctx.stroke();
+          }
+        }
+      }
+      raf = requestAnimationFrame(draw);
+    }
+    function toggleParticles(on) {
+      if (!canvas || prefersReduced) return;
+      if (on && !running) { running = true; if (!particles.length) initParticles(); draw(); }
+      else if (!on && running) { running = false; cancelAnimationFrame(raf); }
+    }
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () { if (running) initParticles(); }, 200);
+    });
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { if (running) cancelAnimationFrame(raf); }
+      else if (running) { draw(); }
+    });
+
+    /* =====================================================================
+       H. INITIALISATION
+       ===================================================================== */
+    $('#year').textContent = new Date().getFullYear();
+    var startId = (location.hash || '#accueil').slice(1);
+    var startEl = document.getElementById(startId);
+    if (!startEl || !startEl.classList.contains('page')) startId = 'accueil';
+    pages.forEach(function (p) { p.classList.toggle('active', p.id === startId); });
+    navBtns.forEach(function (b) { b.setAttribute('aria-selected', b.dataset.tab === startId ? 'true' : 'false'); });
+    history.replaceState({ tab: startId }, '', '#' + startId);
+    revealInActivePage(document.getElementById(startId));
+    toggleParticles(startId === 'accueil');
+  })();
+  </script>
+</body>
+</html>
